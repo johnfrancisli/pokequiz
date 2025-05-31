@@ -18,10 +18,12 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max, name, isPlayer = fa
   };
 
   return (
-    <div className={`w-full max-w-xs ${isPlayer ? 'text-left' : 'text-right'}`}>
-      <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-white/20 mb-2">
-        <span className="text-sm font-bold text-gray-700">{name}</span>
-        <span className="text-sm font-medium text-gray-600">{current}/{max}</span>
+    <div className="w-full max-w-xs">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-white/20">
+          <span className="text-sm font-bold text-gray-700">{name}</span>
+          <span className="text-sm font-medium text-gray-600">{current}/{max}</span>
+        </div>
       </div>
       <div className="w-full bg-gray-200/50 rounded-full h-4 overflow-hidden backdrop-blur-sm">
         <div 
