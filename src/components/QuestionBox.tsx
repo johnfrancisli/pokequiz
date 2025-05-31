@@ -35,14 +35,13 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled 
             key={index}
             onClick={() => handleOptionClick(index)}
             disabled={disabled}
-            className={`p-3 rounded-lg text-left transition-all duration-200 
-              ${selectedOption === index
+            className={`p-3 rounded-lg text-left transition-all duration-200 ${
+              selectedOption === index
                 ? selectedOption === question.correctAnswer 
                   ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-500 text-green-800' 
                   : 'bg-gradient-to-r from-red-100 to-pink-100 border-red-500 text-red-800'
                 : 'bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-gray-800'
-              } 
-              ${disabled ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}
+              } ${disabled ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             <span className="font-medium">{option}</span>
           </button>
