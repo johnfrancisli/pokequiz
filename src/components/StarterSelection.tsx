@@ -8,19 +8,19 @@ const StarterSelection: React.FC = () => {
   return (
     <div className="text-center space-y-6">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">最初のポケモンを選んでください</h2>
-      <div className="grid grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto p-4">
+      <div className="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto p-4">
         {starterList.map((pokemon: StarterPokemon) => (
           <button
             key={pokemon.idx}
             onClick={() => selectStarter(pokemon)}
-            className="flex flex-col items-center p-4 rounded-xl bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-white/20 transition-all hover:shadow-lg transform hover:-translate-y-1"
+            className="flex items-center p-4 rounded-xl bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-white/20 transition-all hover:shadow-lg transform hover:-translate-y-1"
           >
             <img 
               src={pokemon.imageUrl} 
               alt={pokemon.name}
-              className="w-24 h-24 object-contain"
+              className="w-16 h-16 object-contain"
             />
-            <span className="mt-2 font-medium text-gray-800">{pokemon.name}</span>
+            <span className="ml-4 font-medium text-gray-800">{pokemon.name}</span>
           </button>
         ))}
       </div>
