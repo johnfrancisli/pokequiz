@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Question } from '../types/game';
 
 interface QuestionBoxProps {
@@ -9,6 +9,11 @@ interface QuestionBoxProps {
 
 const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  
+  // Reset selected option when question changes
+  useEffect(() => {
+    setSelectedOption(null);
+  }, [question]);
   
   if (!question) {
     return (
