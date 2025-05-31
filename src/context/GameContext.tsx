@@ -125,10 +125,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Calculate damage based on attack strength
   const calculateDamage = (strength: AttackStrength): number => {
     switch (strength) {
-      case 'critical': return 25;
-      case 'strong': return 20;
-      case 'medium': return 15;
-      case 'weak': return 10;
+      case 'critical': return 15;
+      case 'strong': return 12;
+      case 'medium': return 8;
+      case 'weak': return 5;
       default: return 0;
     }
   };
@@ -141,8 +141,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const correct = optionIndex === gameState.currentQuestion?.correctAnswer;
     
     if (correct) {
-      const strength: AttackStrength = 'medium';
-      const damage = 5;
+      const strength = calculateAttackStrength(gameState.timeRemaining);
+      const damage = calculateDamage(strength);
       
       setPlayerAttackStrength(strength);
       setPlayerAttackDamage(damage);
@@ -192,7 +192,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       // Wrong answer - player takes 10 damage
       const strength: AttackStrength = 'strong';
-      const damage = 10;
+      const damage = 8;
       
       setComputerAttackStrength(strength);
       setComputerAttackDamage(damage);
@@ -247,9 +247,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           clearInterval(timer);
           setAnswerSubmitted(true);
 
-          // Time ran out - player takes 5 damage
+          // Time ran out - player takes small damage
           const strength: AttackStrength = 'medium';
-          const damage = 5;
+          const damage = 3;
           
           setComputerAttackStrength(strength);
           setComputerAttackDamage(damage);
