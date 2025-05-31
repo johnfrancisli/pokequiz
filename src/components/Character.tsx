@@ -17,7 +17,7 @@ const Character: React.FC<CharacterProps> = ({ character, isPlayer }) => {
         <img 
           src={`/src/assets/pokemon/regular/${character.pokemonSlug}.png`}
           alt={character.name}
-          className="w-full h-full object-contain"
+          className={`w-full h-full object-contain ${isPlayer ? 'scale-x-[-1]' : ''}`}
         />
       </div>
       <span className="mt-2 text-sm font-bold">{character.name}</span>
