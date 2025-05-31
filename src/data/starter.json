@@ -1,4 +1,4 @@
-{[
+[
   { "idx": "001", "slug": "bulbasaur" },
   { "idx": "004", "slug": "charmander" },
   { "idx": "007", "slug": "squirtle" },
@@ -29,4 +29,3 @@
   { "idx": "909", "slug": "fuecoco" },
   { "idx": "912", "slug": "quaxly" }
 ]
-}
