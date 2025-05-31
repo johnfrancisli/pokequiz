@@ -303,3 +303,4 @@ export const getQuestionWithShuffledOptions = (question: Question): Question => 
     options: shuffledOptions,
     correctAnswer: newCorrectIndex
   };
+}
