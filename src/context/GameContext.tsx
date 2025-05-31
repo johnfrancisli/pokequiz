@@ -5,6 +5,7 @@ import { getStarterPokemonList, getRandomStarter, StarterPokemon } from '../util
 
 interface GameContextType {
   gameState: GameState;
+  selectLevel: (level: number) => void;
   selectStarter: (starter: StarterPokemon) => void;
   answerQuestion: (optionIndex: number) => void;
   resetGame: () => void;
@@ -36,8 +37,22 @@ const defaultGameState: GameState = {
   },
   currentQuestion: null,
   timeRemaining: 5,
-  gameStatus: 'selecting-starter',
-  computerAttackTimer: 5
+  gameStatus: 'selecting-level',
+  computerAttackTimer: 5,
+  selectedLevel: 1
+};
+
+const ATTACK_INTERVALS = {
+  1: 10,
+  2: 8.5,
+  3: 7,
+  4: 5.5,
+  5: 4,
+  6: 3.5,
+  7: 3,
+  8: 2.5,
+  9: 2,
+  10: 1.5
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -53,6 +68,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [showPlayerAttack, setShowPlayerAttack] = useState(false);
   const [showComputerAttack, setShowComputerAttack] = useState(false);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
+
+  const selectLevel = useCallback((level: number) => {
+    setGameState(prev => ({
+      ...prev,
+      selectedLevel: level,
+      gameStatus: 'selecting-starter',
+      computerAttackTimer: ATTACK_INTERVALS[level as keyof typeof ATTACK_INTERVALS]
+    }));
+  }, []);
 
   // Load a new question
   const loadNewQuestion = useCallback(() => {
@@ -307,13 +331,73 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Computer attack timer
   useEffect(() => {
-    // Remove computer auto-attack timer since we're using the new damage rules
-    return;
+    if (gameState.gameStatus !== 'in-progress') return;
+    
+    const attackTimer = setInterval(() => {
+      setGameState(prev => {
+        const interval = ATTACK_INTERVALS[prev.selectedLevel as keyof typeof ATTACK_INTERVALS];
+        const newComputerAttackTimer = prev.computerAttackTimer - 0.1;
+        
+        if (newComputerAttackTimer <= 0) {
+          // Computer attacks
+          const strength: AttackStrength = 'medium';
+          const damage = 5;
+          
+          setComputerAttackStrength(strength);
+          setComputerAttackDamage(damage);
+          
+          setGameState(prevState => ({
+            ...prevState,
+            computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
+            playerCharacter: { ...prevState.playerCharacter, isHit: true }
+          }));
+          
+          setShowComputerAttack(true);
+          
+          setTimeout(() => {
+            setGameState(prevState => {
+              const newPlayerHealth = Math.max(0, prevState.playerCharacter.health - damage);
+              const newGameStatus = newPlayerHealth <= 0 ? 'computer-won' : prevState.gameStatus;
+              
+              return {
+                ...prevState,
+                playerCharacter: {
+                  ...prevState.playerCharacter,
+                  health: newPlayerHealth,
+                  isHit: false
+                },
+                computerCharacter: {
+                  ...prevState.computerCharacter,
+                  isAttacking: false
+                },
+                gameStatus: newGameStatus,
+                computerAttackTimer: interval
+              };
+            });
+            
+            setShowComputerAttack(false);
+          }, 1000);
+          
+          return {
+            ...prev,
+            computerAttackTimer: interval
+          };
+        }
+        
+        return {
+          ...prev,
+          computerAttackTimer: newComputerAttackTimer
+        };
+      });
+    }, 100);
+    
+    return () => clearInterval(attackTimer);
   }, [gameState.gameStatus]);
 
   return (
     <GameContext.Provider value={{
       gameState,
+      selectLevel,
       selectStarter,
       answerQuestion,
       resetGame,

@@ -5,6 +5,7 @@ import HealthBar from './HealthBar';
 import Timer from './Timer';
 import QuestionBox from './QuestionBox';
 import AttackDisplay from './AttackDisplay';
+import LevelSelection from './LevelSelection';
 import StarterSelection from './StarterSelection';
 import pokemonLogo from '../assets/pokemon-logo.png';
 
@@ -23,6 +24,9 @@ const Game: React.FC = () => {
 
   const renderGameStatus = () => {
     switch (gameState.gameStatus) {
+      case 'selecting-level':
+        return <LevelSelection />;
+
       case 'selecting-starter':
         return (
           <div className="text-center space-y-6">
