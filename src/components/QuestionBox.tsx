@@ -18,7 +18,7 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled 
   if (!question) {
     return (
       <div className="w-full max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-        <p className="text-center text-gray-600">Loading question...</p>
+        <p className="text-center text-gray-600">問題を読み込んでいます...</p>
       </div>
     );
   }
@@ -43,9 +43,9 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled 
             className={`p-3 rounded-lg text-left transition-all duration-200 ${
               selectedOption === index
                 ? selectedOption === question.correctAnswer 
-                  ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-500 text-green-800' 
-                  : 'bg-gradient-to-r from-red-100 to-pink-100 border-red-500 text-red-800'
-                : 'bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-gray-800'
+                  ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-500 text-green-800' 
+                  : 'bg-gradient-to-r from-red-100 to-pink-100 border-2 border-red-500 text-red-800'
+                : 'bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-gray-800 border-2 border-transparent'
               } ${disabled ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             <span className="font-medium">{option}</span>

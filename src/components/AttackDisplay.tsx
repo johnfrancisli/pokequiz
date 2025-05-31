@@ -28,11 +28,11 @@ const AttackDisplay: React.FC<AttackDisplayProps> = ({
   
   const getAttackLabel = () => {
     switch (attackStrength) {
-      case 'weak': return 'Weak Attack';
-      case 'medium': return 'Medium Attack';
-      case 'strong': return 'Strong Attack';
-      case 'critical': return 'Critical Hit';
-      default: return 'Attack';
+      case 'weak': return '弱い攻撃';
+      case 'medium': return '普通の攻撃';
+      case 'strong': return '強い攻撃';
+      case 'critical': return 'クリティカル';
+      default: return '攻撃';
     }
   };
 

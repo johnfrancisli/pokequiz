@@ -7,7 +7,7 @@ const StarterSelection: React.FC = () => {
 
   return (
     <div className="text-center space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Choose Your Starter Pokémon</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">最初のポケモンを選んでください</h2>
       <div className="grid grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto p-4">
         {starterList.map((pokemon: StarterPokemon) => (
           <button

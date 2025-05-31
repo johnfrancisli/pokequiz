@@ -35,13 +35,13 @@ const Game: React.FC = () => {
         return (
           <div className="text-center">
             <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-4 text-green-600">Victory!</h2>
-            <p className="mb-6">You defeated the computer with your knowledge!</p>
+            <h2 className="text-3xl font-bold mb-4 text-green-600">勝利！</h2>
+            <p className="mb-6">あなたの知識で相手を倒しました！</p>
             <button 
               onClick={resetGame}
               className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
             >
-              Play Again
+              もう一度プレイ
             </button>
           </div>
         );
@@ -50,13 +50,13 @@ const Game: React.FC = () => {
         return (
           <div className="text-center">
             <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-4 text-red-600">Defeat!</h2>
-            <p className="mb-6">The computer has defeated you!</p>
+            <h2 className="text-3xl font-bold mb-4 text-red-600">敗北！</h2>
+            <p className="mb-6">コンピューターがあなたを倒しました！</p>
             <button 
               onClick={resetGame}
               className="px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
             >
-              Try Again
+              もう一度挑戦
             </button>
           </div>
         );
