@@ -5,12 +5,12 @@ import HealthBar from './HealthBar';
 import Timer from './Timer';
 import QuestionBox from './QuestionBox';
 import AttackDisplay from './AttackDisplay';
+import StarterSelection from './StarterSelection';
 import pokemonLogo from '../assets/pokemon-logo.png';
 
 const Game: React.FC = () => {
   const { 
     gameState, 
-    startGame, 
     answerQuestion, 
     resetGame,
     playerAttackStrength,
@@ -23,17 +23,11 @@ const Game: React.FC = () => {
 
   const renderGameStatus = () => {
     switch (gameState.gameStatus) {
-      case 'not-started':
+      case 'selecting-starter':
         return (
           <div className="text-center space-y-6">
             <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto" />
-            <p className="mb-6">Answer questions quickly to attack your opponent!</p>
-            <button 
-              onClick={startGame}
-              className="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-            >
-              Start Game
-            </button>
+            <StarterSelection />
           </div>
         );
       

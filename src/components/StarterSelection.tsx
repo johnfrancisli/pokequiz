@@ -27,3 +27,5 @@ const StarterSelection: React.FC = () => {
     </div>
   );
 };
+
+export default StarterSelection

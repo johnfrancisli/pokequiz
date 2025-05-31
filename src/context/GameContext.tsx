@@ -286,7 +286,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       playerAttackDamage,
       computerAttackDamage,
       showPlayerAttack,
-      showComputerAttack
+      showComputerAttack,
       starterList
     }}>
       {children}
