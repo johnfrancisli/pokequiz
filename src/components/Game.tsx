@@ -5,6 +5,7 @@ import HealthBar from './HealthBar';
 import Timer from './Timer';
 import QuestionBox from './QuestionBox';
 import AttackDisplay from './AttackDisplay';
+import pokemonLogo from '../assets/pokemon-logo.png';
 
 const Game: React.FC = () => {
   const { 
@@ -24,12 +25,12 @@ const Game: React.FC = () => {
     switch (gameState.gameStatus) {
       case 'not-started':
         return (
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">Question Battle</h1>
+          <div className="text-center space-y-6">
+            <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto" />
             <p className="mb-6">Answer questions quickly to attack your opponent!</p>
             <button 
               onClick={startGame}
-              className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow hover:bg-indigo-700 transition-colors"
+              className="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
             >
               Start Game
             </button>
@@ -39,11 +40,12 @@ const Game: React.FC = () => {
       case 'player-won':
         return (
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4 text-green-600">Victory!</h1>
+            <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold mb-4 text-green-600">Victory!</h2>
             <p className="mb-6">You defeated the computer with your knowledge!</p>
             <button 
               onClick={resetGame}
-              className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow hover:bg-indigo-700 transition-colors"
+              className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
             >
               Play Again
             </button>
@@ -53,11 +55,12 @@ const Game: React.FC = () => {
       case 'computer-won':
         return (
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4 text-red-600">Defeat!</h1>
+            <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold mb-4 text-red-600">Defeat!</h2>
             <p className="mb-6">The computer has defeated you!</p>
             <button 
               onClick={resetGame}
-              className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg shadow hover:bg-indigo-700 transition-colors"
+              className="px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
             >
               Try Again
             </button>
@@ -131,8 +134,8 @@ const Game: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-100 to-purple-100 py-8 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden p-6">
+    <div className="min-h-screen bg-gradient-to-b from-pink-100 via-purple-100 to-blue-100 py-8 px-4">
+      <div className="max-w-2xl mx-auto bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden p-8">
         {renderGameStatus()}
       </div>
     </div>

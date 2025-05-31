@@ -18,12 +18,12 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max, name, isPlayer = fa
   };
 
   return (
-    <div className={`w-full max-w-xs ${isPlayer ? 'text-left' : 'text-right'}`}>
+    <div className={`w-full max-w-xs ${isPlayer ? 'text-left' : 'text-right'} bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/20`}>
       <div className="flex items-center justify-between mb-1">
         <span className="text-sm font-medium text-gray-700">{name}</span>
         <span className="text-sm font-medium text-gray-700">{current} / {max} HP</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+      <div className="w-full bg-gray-200/50 rounded-full h-4 overflow-hidden backdrop-blur-sm">
         <div 
           className={`h-full rounded-full ${getHealthColor()} transition-all duration-500`} 
           style={{ width: `${percentage}%` }}
