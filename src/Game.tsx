@@ -10,10 +10,14 @@
  
  const Game: React.FC = () => {
    const { 
+   }
+ }
 @@ .. @@
      switch (gameState.gameStatus) {
        case 'not-started':
          return (
+         )
+     }
 -          <div className="text-center">
 -            <h1 className="text-3xl font-bold mb-4">Question Battle</h1>
 +          <div className="text-center space-y-6">
