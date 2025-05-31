@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
 import { GameState, Question, AttackStrength, Character } from '../types/game';
-import { getRandomQuestion } from '../data/questions';
+import { questions, shuffleArray, getQuestionWithShuffledOptions } from '../data/questions';
 import { getStarterPokemonList, getRandomStarter, StarterPokemon } from '../utils/pokemonUtils';
 
 interface GameContextType {
@@ -45,6 +45,7 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [gameState, setGameState] = useState<GameState>(defaultGameState);
   const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
+  const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
   const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
   const [computerAttackStrength, setComputerAttackStrength] = useState<AttackStrength | null>(null);
   const [playerAttackDamage, setPlayerAttackDamage] = useState(0);
@@ -55,17 +56,34 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Load a new question
   const loadNewQuestion = useCallback(() => {
+    // If we've used all questions, reshuffle the full question set
+    if (unaskedQuestions.length === 0) {
+      setUnaskedQuestions(shuffleArray([...questions]));
+    }
+
+    // Take the first question from our unasked questions
+    const nextQuestions = [...unaskedQuestions];
+    const nextQuestion = nextQuestions.shift();
+    setUnaskedQuestions(nextQuestions);
+
+    // Shuffle the options for this question
+    const questionWithShuffledOptions = getQuestionWithShuffledOptions(nextQuestion!);
+
     setGameState(prev => ({
       ...prev,
-      currentQuestion: getRandomQuestion(),
+      currentQuestion: questionWithShuffledOptions,
       timeRemaining: 5,
     }));
     setAnswerSubmitted(false);
-  }, []);
+  }, [unaskedQuestions]);
 
   // Start the game
   const selectStarter = useCallback((selectedStarter: StarterPokemon) => {
     const computerStarter = getRandomStarter();
+    // Initialize unasked questions with shuffled questions array
+    const initialQuestions = shuffleArray([...questions]);
+    setUnaskedQuestions(initialQuestions.slice(1)); // Remove first question since we'll use it as initial question
+
     setGameState({
       ...defaultGameState,
       playerCharacter: {
@@ -79,13 +97,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         pokemonSlug: computerStarter.slug
       },
       gameStatus: 'in-progress',
-      currentQuestion: getRandomQuestion()
+      currentQuestion: getQuestionWithShuffledOptions(initialQuestions[0])
     });
   }, []);
 
   // Reset the game
   const resetGame = useCallback(() => {
     setGameState(defaultGameState);
+    setUnaskedQuestions([]);
     setPlayerAttackStrength(null);
     setComputerAttackStrength(null);
     setPlayerAttackDamage(0);
