@@ -36,14 +36,14 @@ export const getStarterPokemonList = (): StarterPokemon[] => {
       return {
         idx: starter.idx,
         slug: starter.slug,
-        name: 'Unknown Pokemon',
+        name: '???',
         imageUrl: `/src/assets/pokemon/unknown.png`
       };
     }
     return {
       idx: starter.idx,
       slug: starter.slug,
-      name: pokemon.name.eng,
+      name: pokemon.name.jpn,
       imageUrl: `/src/assets/pokemon/regular/${starter.slug}.png`
     };
   });
