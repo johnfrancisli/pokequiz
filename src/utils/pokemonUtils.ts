@@ -1,4 +1,4 @@
-import pokemonData from '../data/pokemon.json';
+import pokemonDataArray from '../data/pokemon.json';
 import starterList from '../data/starter.json';
 
 export interface PokemonData {
@@ -15,6 +15,12 @@ export interface PokemonData {
   };
 }
 
+// Create a map for O(1) lookup of pokemon data by idx
+const pokemonDataMap: { [key: string]: PokemonData } = pokemonDataArray.reduce((acc, pokemon: PokemonData) => {
+  acc[pokemon.idx] = pokemon;
+  return acc;
+}, {} as { [key: string]: PokemonData });
+
 export interface StarterPokemon {
   idx: string;
   slug: string;
@@ -24,7 +30,16 @@ export interface StarterPokemon {
 
 export const getStarterPokemonList = (): StarterPokemon[] => {
   return starterList.map(starter => {
-    const pokemon = pokemonData[starter.idx];
+    const pokemon = pokemonDataMap[starter.idx];
+    if (!pokemon) {
+      // Provide fallback data if pokemon is not found
+      return {
+        idx: starter.idx,
+        slug: starter.slug,
+        name: 'Unknown Pokemon',
+        imageUrl: `/src/assets/pokemon/unknown.png`
+      };
+    }
     return {
       idx: starter.idx,
       slug: starter.slug,
