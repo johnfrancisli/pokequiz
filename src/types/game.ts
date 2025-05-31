@@ -11,7 +11,7 @@ export interface Character {
   maxHealth: number;
   isAttacking: boolean;
   isHit: boolean;
-  iconId: string;
+  pokemonSlug: string;
 }
 
 export interface GameState {
@@ -19,7 +19,7 @@ export interface GameState {
   computerCharacter: Character;
   currentQuestion: Question | null;
   timeRemaining: number;
-  gameStatus: 'not-started' | 'in-progress' | 'player-won' | 'computer-won';
+  gameStatus: 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
   computerAttackTimer: number;
 }
 

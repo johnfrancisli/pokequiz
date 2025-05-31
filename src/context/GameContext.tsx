@@ -1,10 +1,11 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
 import { GameState, Question, AttackStrength, Character } from '../types/game';
 import { getRandomQuestion } from '../data/questions';
+import { getStarterPokemonList, getRandomStarter, StarterPokemon } from '../utils/pokemonUtils';
 
 interface GameContextType {
   gameState: GameState;
-  startGame: () => void;
+  selectStarter: (starter: StarterPokemon) => void;
   answerQuestion: (optionIndex: number) => void;
   resetGame: () => void;
   playerAttackStrength: AttackStrength | null;
@@ -13,6 +14,7 @@ interface GameContextType {
   computerAttackDamage: number;
   showPlayerAttack: boolean;
   showComputerAttack: boolean;
+  starterList: StarterPokemon[];
 }
 
 const defaultGameState: GameState = {
@@ -22,7 +24,7 @@ const defaultGameState: GameState = {
     maxHealth: 100,
     isAttacking: false,
     isHit: false,
-    iconId: 'warrior'
+    pokemonSlug: ''
   },
   computerCharacter: {
     name: 'Computer',
@@ -30,11 +32,11 @@ const defaultGameState: GameState = {
     maxHealth: 100,
     isAttacking: false,
     isHit: false,
-    iconId: 'knight'
+    pokemonSlug: ''
   },
   currentQuestion: null,
   timeRemaining: 5,
-  gameStatus: 'not-started',
+  gameStatus: 'selecting-starter',
   computerAttackTimer: 5
 };
 
@@ -42,6 +44,7 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [gameState, setGameState] = useState<GameState>(defaultGameState);
+  const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
   const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
   const [computerAttackStrength, setComputerAttackStrength] = useState<AttackStrength | null>(null);
   const [playerAttackDamage, setPlayerAttackDamage] = useState(0);
@@ -61,9 +64,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   // Start the game
-  const startGame = useCallback(() => {
+  const selectStarter = useCallback((selectedStarter: StarterPokemon) => {
+    const computerStarter = getRandomStarter();
     setGameState({
       ...defaultGameState,
+      playerCharacter: {
+        ...defaultGameState.playerCharacter,
+        name: selectedStarter.name,
+        pokemonSlug: selectedStarter.slug
+      },
+      computerCharacter: {
+        ...defaultGameState.computerCharacter,
+        name: computerStarter.name,
+        pokemonSlug: computerStarter.slug
+      },
       gameStatus: 'in-progress',
       currentQuestion: getRandomQuestion()
     });
@@ -264,7 +278,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <GameContext.Provider value={{
       gameState,
-      startGame,
+      selectStarter,
       answerQuestion,
       resetGame,
       playerAttackStrength,
@@ -273,6 +287,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       computerAttackDamage,
       showPlayerAttack,
       showComputerAttack
+      starterList
     }}>
       {children}
     </GameContext.Provider>
