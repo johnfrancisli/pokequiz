@@ -19,8 +19,9 @@ export interface GameState {
   computerCharacter: Character;
   currentQuestion: Question | null;
   timeRemaining: number;
-  gameStatus: 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
+  gameStatus: 'selecting-level' | 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
   computerAttackTimer: number;
+  selectedLevel: number;
 }
 
 export type AttackStrength = 'weak' | 'medium' | 'strong' | 'critical';
