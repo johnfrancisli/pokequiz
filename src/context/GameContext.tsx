@@ -122,8 +122,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const correct = optionIndex === gameState.currentQuestion?.correctAnswer;
     
     if (correct) {
-      const strength = calculateAttackStrength(gameState.timeRemaining);
-      const damage = calculateDamage(strength);
+      const strength: AttackStrength = 'medium';
+      const damage = 5;
       
       setPlayerAttackStrength(strength);
       setPlayerAttackDamage(damage);
@@ -171,11 +171,49 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }, 500);
       }, 1000);
     } else {
-      // Wrong answer, load a new question after a short delay
+      // Wrong answer - player takes 10 damage
+      const strength: AttackStrength = 'strong';
+      const damage = 10;
+      
+      setComputerAttackStrength(strength);
+      setComputerAttackDamage(damage);
+      
+      setGameState(prev => ({
+        ...prev,
+        computerCharacter: { ...prev.computerCharacter, isAttacking: true },
+        playerCharacter: { ...prev.playerCharacter, isHit: true }
+      }));
+      
+      setShowComputerAttack(true);
+      
       setTimeout(() => {
-        if (gameState.gameStatus === 'in-progress') {
-          loadNewQuestion();
-        }
+        setGameState(prev => {
+          const newPlayerHealth = Math.max(0, prev.playerCharacter.health - damage);
+          const newGameStatus = newPlayerHealth <= 0 ? 'computer-won' : prev.gameStatus;
+          
+          return {
+            ...prev,
+            playerCharacter: {
+              ...prev.playerCharacter,
+              health: newPlayerHealth,
+              isHit: false
+            },
+            computerCharacter: {
+              ...prev.computerCharacter,
+              isAttacking: false
+            },
+            gameStatus: newGameStatus
+          };
+        });
+        
+        setShowComputerAttack(false);
+        
+        // Load new question if game continues
+        setTimeout(() => {
+          if (gameState.gameStatus === 'in-progress') {
+            loadNewQuestion();
+          }
+        }, 500);
       }, 1000);
     }
   }, [gameState, answerSubmitted, loadNewQuestion]);
@@ -189,12 +227,50 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (prev.timeRemaining <= 0) {
           clearInterval(timer);
           setAnswerSubmitted(true);
+
+          // Time ran out - player takes 5 damage
+          const strength: AttackStrength = 'medium';
+          const damage = 5;
           
-          // Load a new question after a short delay
+          setComputerAttackStrength(strength);
+          setComputerAttackDamage(damage);
+          
+          setGameState(prevState => ({
+            ...prevState,
+            computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
+            playerCharacter: { ...prevState.playerCharacter, isHit: true }
+          }));
+          
+          setShowComputerAttack(true);
+          
           setTimeout(() => {
-            if (prev.gameStatus === 'in-progress') {
-              loadNewQuestion();
-            }
+            setGameState(prevState => {
+              const newPlayerHealth = Math.max(0, prevState.playerCharacter.health - damage);
+              const newGameStatus = newPlayerHealth <= 0 ? 'computer-won' : prevState.gameStatus;
+              
+              return {
+                ...prevState,
+                playerCharacter: {
+                  ...prevState.playerCharacter,
+                  health: newPlayerHealth,
+                  isHit: false
+                },
+                computerCharacter: {
+                  ...prevState.computerCharacter,
+                  isAttacking: false
+                },
+                gameStatus: newGameStatus
+              };
+            });
+            
+            setShowComputerAttack(false);
+          
+            // Load new question if game continues
+            setTimeout(() => {
+              if (gameState.gameStatus === 'in-progress') {
+                loadNewQuestion();
+              }
+            }, 500);
           }, 1000);
           
           return prev;
@@ -212,67 +288,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Computer attack timer
   useEffect(() => {
-    if (gameState.gameStatus !== 'in-progress') return;
-    
-    const attackTimer = setInterval(() => {
-      setGameState(prev => {
-        const newComputerAttackTimer = prev.computerAttackTimer - 0.1;
-        
-        if (newComputerAttackTimer <= 0) {
-          // Computer attacks
-          const strength: AttackStrength = 'medium';
-          const damage = calculateDamage(strength);
-          
-          setComputerAttackStrength(strength);
-          setComputerAttackDamage(damage);
-          
-          setGameState(prevState => ({
-            ...prevState,
-            computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
-            playerCharacter: { ...prevState.playerCharacter, isHit: true }
-          }));
-          
-          setShowComputerAttack(true);
-          
-          // After a short delay, update health and reset attack/hit status
-          setTimeout(() => {
-            setGameState(prevState => {
-              const newPlayerHealth = Math.max(0, prevState.playerCharacter.health - damage);
-              const newGameStatus = newPlayerHealth <= 0 ? 'computer-won' : prevState.gameStatus;
-              
-              return {
-                ...prevState,
-                playerCharacter: {
-                  ...prevState.playerCharacter,
-                  health: newPlayerHealth,
-                  isHit: false
-                },
-                computerCharacter: {
-                  ...prevState.computerCharacter,
-                  isAttacking: false
-                },
-                gameStatus: newGameStatus,
-                computerAttackTimer: 5
-              };
-            });
-            
-            setShowComputerAttack(false);
-          }, 1000);
-          
-          return {
-            ...prev,
-            computerAttackTimer: 5
-          };
-        }
-        
-        return {
-          ...prev,
-          computerAttackTimer: newComputerAttackTimer
-        };
-      });
-    }, 100);
-    
-    return () => clearInterval(attackTimer);
+    // Remove computer auto-attack timer since we're using the new damage rules
+    return;
   }, [gameState.gameStatus]);
 
   return (

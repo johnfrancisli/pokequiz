@@ -1,6 +1,6 @@
 import { Question } from '../types/game';
 
-// 各 question の options[0] が正解の読み仮名になるように格納しておく
+// 各 question の options[0] が正解の読み仮名となるように保持しておく
 export const questions: Question[] = [
   {
     id: 1,
@@ -280,9 +280,9 @@ export const questions: Question[] = [
   }
 ];
 
-// Fisher–Yates アルゴリズムで配列をシャッフルするだけのヘルパー関数
+// Fisher–Yates アルゴリズムで配列をシャッフルするヘルパー関数
 function shuffleArray<T>(array: T[]): T[] {
-  const arr = array.slice(); // 元データは破壊しない
+  const arr = array.slice(); // 元データを壊さないようにコピー
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -291,22 +291,21 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export const getRandomQuestion = (): Question => {
-  // ランダムに1問選ぶ
+  // ランダムに1問を選ぶ
   const randomIndex = Math.floor(Math.random() * questions.length);
   const original = questions[randomIndex];
 
-  // correct（index 0） はそのまま先頭に置き、残り3つだけシャッフルする
-  const [correctOption, ...distractors] = original.options;
-  const shuffledDistractors = shuffleArray(distractors);
+  // options 全体をシャッフル
+  const shuffledOptions = shuffleArray(original.options);
 
-  // 返却用に正解を先頭、続いてシャッフル済みの不正解3つを結合
-  const randomizedOptions = [correctOption, ...shuffledDistractors];
+  // シャッフル後の配列内で、もともとの正解（options[0]）がどこに移ったか探す
+  const correctReading = original.options[original.correctAnswer]; // ここでは常に options[0]
+  const newCorrectIndex = shuffledOptions.findIndex(opt => opt === correctReading);
 
   return {
     id: original.id,
     text: original.text,
-    options: randomizedOptions,
-    // 常に 0 を示すことで「正解は options[0]」とわかりやすくする
-    correctAnswer: 0
+    options: shuffledOptions,
+    correctAnswer: newCorrectIndex
   };
 };
