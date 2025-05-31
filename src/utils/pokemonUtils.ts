@@ -16,8 +16,12 @@ export interface PokemonData {
 }
 
 // Create a map for O(1) lookup of pokemon data by idx
-const pokemonDataMap: { [key: string]: PokemonData } = (pokemonDataArray.pokemon || []).reduce((acc, pokemon: PokemonData) => {
-  acc[pokemon.idx] = pokemon;
+const pokemonDataMap: { [key: string]: PokemonData } = Object.entries(pokemonDataArray).reduce((acc, [idx, pokemon]) => {
+  acc[idx] = {
+    idx,
+    name: pokemon.name,
+    slug: pokemon.slug
+  };
   return acc;
 }, {} as { [key: string]: PokemonData });
 
