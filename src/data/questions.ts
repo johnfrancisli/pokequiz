@@ -1,40 +1,312 @@
 import { Question } from '../types/game';
 
-// Placeholder questions - these would be replaced with actual questions later
+// 各 question の options[0] が正解の読み仮名になるように格納しておく
 export const questions: Question[] = [
   {
     id: 1,
-    text: "What is the capital of France?",
-    options: ["London", "Berlin", "Paris", "Madrid"],
-    correctAnswer: 2
+    text: "意味",
+    options: ["いみ", "きめる", "ゆうめい", "みじかい"],
+    correctAnswer: 0
   },
   {
     id: 2,
-    text: "Which planet is known as the Red Planet?",
-    options: ["Venus", "Mars", "Jupiter", "Saturn"],
-    correctAnswer: 1
+    text: "役に立つ",
+    options: ["やくにたつ", "かつ", "きめる", "つかう"],
+    correctAnswer: 0
   },
   {
     id: 3,
-    text: "What is 9 × 7?",
-    options: ["56", "63", "72", "81"],
-    correctAnswer: 1
+    text: "使う",
+    options: ["つかう", "ひろう", "かつ", "おきる"],
+    correctAnswer: 0
   },
   {
     id: 4,
-    text: "Who painted the Mona Lisa?",
-    options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
-    correctAnswer: 2
+    text: "短い",
+    options: ["みじかい", "ひとしい", "にがて", "はじめる"],
+    correctAnswer: 0
   },
   {
     id: 5,
-    text: "What is the chemical symbol for gold?",
-    options: ["Au", "Ag", "Fe", "Cu"],
+    text: "自由のめがね",
+    options: ["じゆうのめがね", "たいへいよう", "ひらがな", "ふくそう"],
+    correctAnswer: 0
+  },
+  {
+    id: 6,
+    text: "体温",
+    options: ["たいおん", "たいへいよう", "ちばけん", "つかう"],
+    correctAnswer: 0
+  },
+  {
+    id: 7,
+    text: "今度",
+    options: ["こんど", "きょねん", "ぜんぶ", "はじめる"],
+    correctAnswer: 0
+  },
+  {
+    id: 8,
+    text: "全部",
+    options: ["ぜんぶ", "ぜんいん", "りょうほう", "たいへいよう"],
+    correctAnswer: 0
+  },
+  {
+    id: 9,
+    text: "全員",
+    options: ["ぜんいん", "ぜんぶ", "りょうほう", "ちばけん"],
+    correctAnswer: 0
+  },
+  {
+    id: 10,
+    text: "平がな",
+    options: ["ひらがな", "たいへいよう", "はじめる", "ならう"],
+    correctAnswer: 0
+  },
+  {
+    id: 11,
+    text: "重いかばん",
+    options: ["おもいかばん", "はしをわたる", "ひろう", "かつ"],
+    correctAnswer: 0
+  },
+  {
+    id: 12,
+    text: "等しい",
+    options: ["ひとしい", "にがて", "きめる", "そだてる"],
+    correctAnswer: 0
+  },
+  {
+    id: 13,
+    text: "とても寒い",
+    options: ["とてもさむい", "みじかい", "ひとしい", "おきる"],
+    correctAnswer: 0
+  },
+  {
+    id: 14,
+    text: "決める",
+    options: ["きめる", "はじめる", "やくにたつ", "つかう"],
+    correctAnswer: 0
+  },
+  {
+    id: 15,
+    text: "道路",
+    options: ["どうろ", "さかみち", "はしをわたる", "ふで"],
+    correctAnswer: 0
+  },
+  {
+    id: 16,
+    text: "屋根",
+    options: ["やね", "そうこ", "こくばん", "かかり"],
+    correctAnswer: 0
+  },
+  {
+    id: 17,
+    text: "住んでいる",
+    options: ["すんでいる", "ならう", "そだてる", "にがて"],
+    correctAnswer: 0
+  },
+  {
+    id: 18,
+    text: "拾う",
+    options: ["ひろう", "ひとしい", "ひらがな", "ふくそう"],
+    correctAnswer: 0
+  },
+  {
+    id: 19,
+    text: "橋をわたる",
+    options: ["はしをわたる", "さかみち", "どうろ", "おきる"],
+    correctAnswer: 0
+  },
+  {
+    id: 20,
+    text: "坂道",
+    options: ["さかみち", "どうろ", "はしをわたる", "いみ"],
+    correctAnswer: 0
+  },
+  {
+    id: 21,
+    text: "写真",
+    options: ["しゃしん", "こくばん", "えだまめ", "たいへいよう"],
+    correctAnswer: 0
+  },
+  {
+    id: 22,
+    text: "習う",
+    options: ["ならう", "そだてる", "かかり", "きょねん"],
+    correctAnswer: 0
+  },
+  {
+    id: 23,
+    text: "千葉県",
+    options: ["ちばけん", "きょねん", "たいへいよう", "きめる"],
+    correctAnswer: 0
+  },
+  {
+    id: 24,
+    text: "去年",
+    options: ["きょねん", "ちばけん", "ぜんぶ", "ぜんいん"],
+    correctAnswer: 0
+  },
+  {
+    id: 25,
+    text: "有名",
+    options: ["ゆうめい", "いみ", "ちばけん", "さかみち"],
+    correctAnswer: 0
+  },
+  {
+    id: 26,
+    text: "笛をふく",
+    options: ["ふえをふく", "ふで", "ふくそう", "ひろう"],
+    correctAnswer: 0
+  },
+  {
+    id: 27,
+    text: "黒板",
+    options: ["こくばん", "そうこ", "しょくぶつ", "ふくそう"],
+    correctAnswer: 0
+  },
+  {
+    id: 28,
+    text: "始める",
+    options: ["はじめる", "きめる", "すんでいる", "おきる"],
+    correctAnswer: 0
+  },
+  {
+    id: 29,
+    text: "勝つ",
+    options: ["かつ", "かかり", "つかう", "ひろう"],
+    correctAnswer: 0
+  },
+  {
+    id: 30,
+    text: "苦手",
+    options: ["にがて", "ひとしい", "おもいかばん", "つかう"],
+    correctAnswer: 0
+  },
+  {
+    id: 31,
+    text: "係",
+    options: ["かかり", "かつ", "きょねん", "つかう"],
+    correctAnswer: 0
+  },
+  {
+    id: 32,
+    text: "育てる",
+    options: ["そだてる", "すんでいる", "きめる", "はじめる"],
+    correctAnswer: 0
+  },
+  {
+    id: 33,
+    text: "学級",
+    options: ["がっきゅう", "しょくぶつ", "そうこ", "かつ"],
+    correctAnswer: 0
+  },
+  {
+    id: 34,
+    text: "倉庫",
+    options: ["そうこ", "こくばん", "しょくぶつ", "そだてる"],
+    correctAnswer: 0
+  },
+  {
+    id: 35,
+    text: "起きる",
+    options: ["おきる", "おれいする", "かつ", "はじめる"],
+    correctAnswer: 0
+  },
+  {
+    id: 36,
+    text: "お礼する",
+    options: ["おれいする", "おきる", "えだまめ", "かかり"],
+    correctAnswer: 0
+  },
+  {
+    id: 37,
+    text: "筆",
+    options: ["ふで", "ふえをふく", "ふくそう", "しょくぶつ"],
+    correctAnswer: 0
+  },
+  {
+    id: 38,
+    text: "植物",
+    options: ["しょくぶつ", "しなもの", "にもつ", "きょねん"],
+    correctAnswer: 0
+  },
+  {
+    id: 39,
+    text: "荷物",
+    options: ["にもつ", "しなもの", "しょくぶつ", "そうこ"],
+    correctAnswer: 0
+  },
+  {
+    id: 40,
+    text: "品物",
+    options: ["しなもの", "にもつ", "しょくぶつ", "いみ"],
+    correctAnswer: 0
+  },
+  {
+    id: 41,
+    text: "木炭",
+    options: ["もくたん", "たいへいよう", "さんじゅうびょう", "こくばん"],
+    correctAnswer: 0
+  },
+  {
+    id: 42,
+    text: "えだ豆",
+    options: ["えだまめ", "もくたん", "おもいかばん", "こくばん"],
+    correctAnswer: 0
+  },
+  {
+    id: 43,
+    text: "両方",
+    options: ["りょうほう", "たいへいよう", "こくばん", "ぜんぶ"],
+    correctAnswer: 0
+  },
+  {
+    id: 44,
+    text: "太平洋",
+    options: ["たいへいよう", "たいおん", "りょうほう", "ちばけん"],
+    correctAnswer: 0
+  },
+  {
+    id: 45,
+    text: "服そう",
+    options: ["ふくそう", "ふえをふく", "ふで", "そだてる"],
+    correctAnswer: 0
+  },
+  {
+    id: 46,
+    text: "三十秒",
+    options: ["さんじゅうびょう", "ちばけん", "ぜんぶ", "たいへいよう"],
     correctAnswer: 0
   }
 ];
 
+// Fisher–Yates アルゴリズムで配列をシャッフルするだけのヘルパー関数
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = array.slice(); // 元データは破壊しない
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 export const getRandomQuestion = (): Question => {
+  // ランダムに1問選ぶ
   const randomIndex = Math.floor(Math.random() * questions.length);
-  return questions[randomIndex];
+  const original = questions[randomIndex];
+
+  // correct（index 0） はそのまま先頭に置き、残り3つだけシャッフルする
+  const [correctOption, ...distractors] = original.options;
+  const shuffledDistractors = shuffleArray(distractors);
+
+  // 返却用に正解を先頭、続いてシャッフル済みの不正解3つを結合
+  const randomizedOptions = [correctOption, ...shuffledDistractors];
+
+  return {
+    id: original.id,
+    text: original.text,
+    options: randomizedOptions,
+    // 常に 0 を示すことで「正解は options[0]」とわかりやすくする
+    correctAnswer: 0
+  };
 };
