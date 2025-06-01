@@ -49,8 +49,8 @@ const defaultGameState: GameState = {
     pokemonSlug: ''
   },
   currentQuestion: null,
-  timeRemaining: QUESTION_TIMERS[1],
-  maxQuestionTime: QUESTION_TIMERS[1],
+  timeRemaining: 10,
+  maxQuestionTime: 10,
   gameStatus: 'selecting-level',
   selectedLevel: 1
 };
@@ -78,17 +78,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const selectLevel = useCallback((level: number) => {
+    const questionTime = QUESTION_TIMERS[level as keyof typeof QUESTION_TIMERS];
     setGameState(prev => ({
       ...prev,
       selectedLevel: level,
       gameStatus: 'selecting-starter',
-      timeRemaining: QUESTION_TIMERS[level as keyof typeof QUESTION_TIMERS],
-      maxQuestionTime: QUESTION_TIMERS[level as keyof typeof QUESTION_TIMERS]
+      timeRemaining: questionTime,
+      maxQuestionTime: questionTime
     }));
   }, []);
 
   // Load a new question
   const loadNewQuestion = useCallback(() => {
+    const questionTime = QUESTION_TIMERS[gameState.selectedLevel as keyof typeof QUESTION_TIMERS];
+    
     // If we've used all questions, reshuffle the full question set
     if (unaskedQuestions.length === 0) {
       setUnaskedQuestions(shuffleArray([...questions]));
@@ -106,13 +109,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       currentQuestion: questionWithShuffledOptions,
       timeRemaining: QUESTION_TIMERS[prev.selectedLevel as keyof typeof QUESTION_TIMERS],
+      timeRemaining: questionTime,
+      maxQuestionTime: questionTime
     })); 
     setAnswerSubmitted(false);
-  }, [unaskedQuestions]);
+  }, [unaskedQuestions, gameState.selectedLevel]);
 
   // Start the game
   const selectStarter = useCallback((selectedStarter: StarterPokemon) => {
     const computerStarter = getRandomStarter();
+    const questionTime = QUESTION_TIMERS[defaultGameState.selectedLevel as keyof typeof QUESTION_TIMERS];
+    
     // Initialize unasked questions with shuffled questions array
     const initialQuestions = shuffleArray([...questions]);
     setUnaskedQuestions(initialQuestions.slice(1)); // Remove first question since we'll use it as initial question
@@ -131,6 +138,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       gameStatus: 'in-progress',
       currentQuestion: getQuestionWithShuffledOptions(initialQuestions[0])
+      currentQuestion: getQuestionWithShuffledOptions(initialQuestions[0]),
+      timeRemaining: questionTime,
+      maxQuestionTime: questionTime
     });
   }, []);
 
