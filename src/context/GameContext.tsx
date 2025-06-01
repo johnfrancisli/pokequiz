@@ -6,6 +6,7 @@ import { getStarterPokemonList, getRandomStarter, StarterPokemon } from '../util
 interface GameContextType {
   gameState: GameState;
   selectLevel: (level: number) => void;
+  loadQuestionSet: (id: string) => Promise<void>;
   selectStarter: (starter: StarterPokemon) => void;
   answerQuestion: (optionIndex: number) => void;
   resetGame: (keepLevelAndQuestionSet?: boolean) => void;
@@ -51,13 +52,17 @@ const defaultGameState: GameState = {
   currentQuestion: null,
   timeRemaining: 10,
   maxQuestionTime: 10,
-  gameStatus: 'selecting-level',
-  selectedLevel: 1
+  gameStatus: 'selecting-question-set',
+  selectedLevel: 1,
+  currentQuestionSetId: null
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
-export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const GameProvider: React.FC<{ 
+  children: React.ReactNode;
+  initialQuestionSetId?: string | null;
+}> = ({ children, initialQuestionSetId }) => {
   const [gameState, setGameState] = useState<GameState>(defaultGameState);
   const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
   const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
@@ -70,14 +75,33 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [showPlayerAttack, setShowPlayerAttack] = useState(false);
   const [showComputerAttack, setShowComputerAttack] = useState(false);
 
-  // Load initial question set
-  useEffect(() => {
-    const loadInitialQuestions = async () => {
-      const questionSet = await loadQuestionSetData('default');
+  // Load question set
+  const loadQuestionSet = useCallback(async (id: string) => {
+    try {
+      const questionSet = await loadQuestionSetData(id);
       setAllQuestions(questionSet.questions);
-    };
-    loadInitialQuestions();
+      setGameState(prev => ({
+        ...prev,
+        gameStatus: 'selecting-level',
+        currentQuestionSetId: id
+      }));
+    } catch (error) {
+      throw error;
+    }
   }, []);
+
+  // Handle initial question set from URL
+  useEffect(() => {
+    if (initialQuestionSetId) {
+      loadQuestionSet(initialQuestionSetId).catch(() => {
+        // If loading fails, stay in question set selection state
+        setGameState(prev => ({
+          ...prev,
+          gameStatus: 'selecting-question-set'
+        }));
+      });
+    }
+  }, [initialQuestionSetId, loadQuestionSet]);
 
   const getAttackStrengthFromPercentage = (percentage: number): AttackStrength => {
     if (percentage >= 80) return 'critical';
@@ -156,8 +180,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Reset the game
   const resetGame = useCallback((keepLevelAndQuestionSet: boolean = false) => {
     setGameState(prev => ({
+      ...prev,
       ...defaultGameState,
-      selectedLevel: keepLevelAndQuestionSet ? prev.selectedLevel : 1
+      selectedLevel: keepLevelAndQuestionSet ? prev.selectedLevel : 1,
+      currentQuestionSetId: keepLevelAndQuestionSet ? prev.currentQuestionSetId : null,
+      gameStatus: keepLevelAndQuestionSet ? 'selecting-level' : 'selecting-question-set'
     }));
     setUnaskedQuestions([]);
     setAnswerSubmitted(false);
@@ -344,6 +371,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       selectStarter,
       answerQuestion,
       resetGame,
+      loadQuestionSet,
       starterList,
       playerAttackStrength,
       computerAttackStrength,
