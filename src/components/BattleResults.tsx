@@ -35,11 +35,11 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
           />
           <span className="font-bold">{gameState.playerCharacter.name}</span>
           <span className="text-sm">
-            HP: {gameState.playerCharacter.health}/{gameState.playerCharacter.maxHealth}
+            {t('battle.hp').replace('{current}', gameState.playerCharacter.health.toString()).replace('{max}', gameState.playerCharacter.maxHealth.toString())}
           </span>
         </div>
         
-        <div className="text-2xl font-bold">VS</div>
+        <div className="text-2xl font-bold">{t('battle.vs')}</div>
         
         <div className="flex flex-col items-center space-y-2">
           <img
@@ -49,7 +49,7 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
           />
           <span className="font-bold">{gameState.computerCharacter.name}</span>
           <span className="text-sm">
-            HP: {gameState.computerCharacter.health}/{gameState.computerCharacter.maxHealth}
+            {t('battle.hp').replace('{current}', gameState.computerCharacter.health.toString()).replace('{max}', gameState.computerCharacter.maxHealth.toString())}
           </span>
         </div>
       </div>
@@ -65,7 +65,7 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
             >
               <div className="flex justify-between items-start mb-2">
                 <span className="font-medium text-gray-800">
-                  問題 {index + 1}: {record.question.text}
+                  {t('battle.questionPrefix').replace('{number}', (index + 1).toString())}{' '}{record.question.text}
                 </span>
                 <span className={`font-medium ${getAnswerStatusColor(record)}`}>
                   {getAnswerStatusText(record)}
