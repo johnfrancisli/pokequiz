@@ -1,6 +1,10 @@
 import pokemonDataArray from '../data/pokemon.json';
 import starterList from '../data/starter.json';
 
+const getImagePath = (pokemonSlug: string) => {
+  return new URL(`/src/assets/pokemon/regular/${pokemonSlug}.png`, import.meta.url).href;
+};
+
 export interface PokemonData {
   idx: string;
   name: {
@@ -48,7 +52,7 @@ export const getStarterPokemonList = (): StarterPokemon[] => {
       idx: starter.idx,
       slug: starter.slug,
       name: pokemon.name.jpn,
-      imageUrl: `/src/assets/pokemon/regular/${starter.slug}.png`
+      imageUrl: getImagePath(starter.slug)
     };
   });
 };

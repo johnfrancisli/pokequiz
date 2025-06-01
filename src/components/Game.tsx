@@ -7,7 +7,8 @@ import QuestionBox from './QuestionBox';
 import AttackDisplay from './AttackDisplay';
 import LevelSelection from './LevelSelection';
 import StarterSelection from './StarterSelection';
-import pokemonLogo from '../assets/pokemon-logo.png';
+
+const pokemonLogoUrl = new URL('../assets/pokemon-logo.png', import.meta.url).href;
 
 const Game: React.FC = () => {
   const { 
@@ -30,7 +31,7 @@ const Game: React.FC = () => {
       case 'selecting-starter':
         return (
           <div className="text-center space-y-6">
-            <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto" />
+            <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto" />
             <StarterSelection />
           </div>
         );
@@ -38,7 +39,7 @@ const Game: React.FC = () => {
       case 'player-won':
         return (
           <div className="text-center">
-            <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto mb-4" />
+            <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-green-600">勝利！</h2>
             <p className="mb-6">あなたの知識で相手を倒しました！</p>
             <button 
@@ -53,7 +54,7 @@ const Game: React.FC = () => {
       case 'computer-won':
         return (
           <div className="text-center">
-            <img src={pokemonLogo} alt="Pokemon" className="h-24 mx-auto mb-4" />
+            <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-red-600">敗北！</h2>
             <p className="mb-6">コンピューターがあなたを倒しました！</p>
             <button 

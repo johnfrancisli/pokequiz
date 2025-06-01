@@ -1,11 +1,15 @@
 import React from 'react';
-import { Sword } from 'lucide-react';
 import { Character as CharacterType } from '../types/game';
 
 interface CharacterProps {
   character: CharacterType;
   isPlayer: boolean;
 }
+
+const getImagePath = (pokemonSlug: string) => {
+  // Use dynamic import.meta.env.BASE_URL to ensure correct path in production
+  return new URL(`/src/assets/pokemon/regular/${pokemonSlug}.png`, import.meta.url).href;
+};
 
 const Character: React.FC<CharacterProps> = ({ character, isPlayer }) => {
   return (
@@ -15,7 +19,7 @@ const Character: React.FC<CharacterProps> = ({ character, isPlayer }) => {
           ${character.isAttacking ? isPlayer ? 'animate-attack-right' : 'animate-attack-left' : ''}`}
       >
         <img 
-          src={`/src/assets/pokemon/regular/${character.pokemonSlug}.png`}
+          src={getImagePath(character.pokemonSlug)}
           alt={character.name}
           className={`w-full h-full object-contain ${isPlayer ? 'scale-x-[-1]' : ''}`}
         />
