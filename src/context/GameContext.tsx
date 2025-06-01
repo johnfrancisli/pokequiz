@@ -63,6 +63,8 @@ const defaultGameState: GameState = {
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
+const MINIMUM_DAMAGE = 5;
+
 export const GameProvider: React.FC<{ 
   children: React.ReactNode;
   initialQuestionSetId?: string | null;
@@ -276,7 +278,8 @@ export const GameProvider: React.FC<{
     } else {
       const timePassed = gameState.maxQuestionTime - gameState.timeRemaining;
       const percentage = (timePassed / gameState.maxQuestionTime) * 100;
-      const damage = Math.ceil((percentage / 100) * 10);
+      const additionalDamage = Math.ceil((percentage / 100) * MINIMUM_DAMAGE);
+      const damage = MINIMUM_DAMAGE + additionalDamage;
       const strength = getAttackStrengthFromPercentage(percentage);
       
       setComputerAttackStrength(strength);
@@ -342,7 +345,7 @@ export const GameProvider: React.FC<{
             timeRemaining: 0
           };
 
-          const damage = 10;
+          const damage = MINIMUM_DAMAGE * 2; // Maximum damage when time is up (5 + 5)
           setComputerAttackStrength('critical');
           setComputerAttackDamage(damage);
           setShowComputerAttack(true);
