@@ -190,7 +190,6 @@ export const GameProvider: React.FC<{
       gameStatus: keepLevelAndQuestionSet ? 'selecting-level' : 'selecting-question-set'
     }));
     setUnaskedQuestions([]);
-    setAnswerSubmitted(false);
     setPlayerAttackStrength(null);
     setComputerAttackStrength(null);
     setPlayerAttackDamage(0);
@@ -207,7 +206,7 @@ export const GameProvider: React.FC<{
     if (!currentQuestion) return;
 
     // Record the answer
-    const answerRecord: AnswerRecord = {
+    const answerRecord = {
       question: currentQuestion,
       selectedAnswerIndex: optionIndex,
       correctAnswerIndex: currentQuestion.correctAnswer,
@@ -265,8 +264,8 @@ export const GameProvider: React.FC<{
             loadNewQuestion();
           }
           return prev;
-        }, 500);
-      });
+        });
+      }, 500);
     } else {
       const timePassed = gameState.maxQuestionTime - gameState.timeRemaining;
       const percentage = (timePassed / gameState.maxQuestionTime) * 100;
@@ -281,6 +280,7 @@ export const GameProvider: React.FC<{
         ...prev,
         answerSubmitted: true,
         currentQuestionPlayerSelectedOption: optionIndex,
+        questionHistory: [...prev.questionHistory, answerRecord],
         computerCharacter: { ...prev.computerCharacter, isAttacking: true },
         playerCharacter: { ...prev.playerCharacter, isHit: true }
       }));
@@ -316,7 +316,7 @@ export const GameProvider: React.FC<{
         }
       }, 500);
     }
-  }, [gameState, answerSubmitted, loadNewQuestion]);
+  }, [gameState, loadNewQuestion]);
 
   // Game timer logic
   useEffect(() => {
@@ -328,7 +328,7 @@ export const GameProvider: React.FC<{
           clearInterval(timer);
           
           // Record the timeout
-          const answerRecord: AnswerRecord = {
+          const answerRecord = {
             question: prev.currentQuestion!,
             selectedAnswerIndex: null,
             correctAnswerIndex: prev.currentQuestion!.correctAnswer,
@@ -390,6 +390,7 @@ export const GameProvider: React.FC<{
     }, 100);
     
     return () => clearInterval(timer);
+  }, [gameState.gameStatus, gameState.answerSubmitted, loadNewQuestion]);
 
   return (
     <GameContext.Provider value={{
