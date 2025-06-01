@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { Question } from '../types/game';
 
 interface QuestionBoxProps {
@@ -14,11 +15,12 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({
   isAnswerSubmitted,
   playerSelectedOptionIndex 
 }) => {
+  const { t } = useLanguage();
   
   if (!question) {
     return (
       <div className="w-full max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-        <p className="text-center text-gray-600">問題を読み込んでいます...</p>
+        <p className="text-center text-gray-600">{t('battle.loading')}</p>
       </div>
     );
   }

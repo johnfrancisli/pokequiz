@@ -1,13 +1,15 @@
 import React from 'react';
 import { useGame } from '../context/GameContext';
+import { useLanguage } from '../context/LanguageContext';
 import { StarterPokemon } from '../utils/pokemonUtils';
 
 const StarterSelection: React.FC = () => {
   const { selectStarter, starterList } = useGame();
+  const { t } = useLanguage();
 
   return (
     <div className="text-center space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">最初のポケモンを選んでください</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">{t('starter.title')}</h2>
       <div className="grid grid-cols-1 gap-4 max-h-[70vh] overflow-y-auto p-4">
         {starterList.map((pokemon: StarterPokemon) => (
           <button

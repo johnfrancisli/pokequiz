@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { GameState, AnswerRecord } from '../types/game';
 
 interface BattleResultsProps {
@@ -6,6 +7,8 @@ interface BattleResultsProps {
 }
 
 const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
+  const { t } = useLanguage();
+
   const getImagePath = (pokemonSlug: string) => {
     return new URL(`/src/assets/pokemon/regular/${pokemonSlug}.png`, import.meta.url).href;
   };
@@ -16,8 +19,8 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
   };
 
   const getAnswerStatusText = (record: AnswerRecord) => {
-    if (record.selectedAnswerIndex === null) return '時間切れ';
-    return record.selectedAnswerIndex === record.correctAnswerIndex ? '正解' : '不正解';
+    if (record.selectedAnswerIndex === null) return t('battle.timeout');
+    return record.selectedAnswerIndex === record.correctAnswerIndex ? t('battle.correct') : t('battle.incorrect');
   };
 
   return (
@@ -53,7 +56,7 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
 
       {/* Question History */}
       <div className="space-y-4">
-        <h3 className="text-xl font-bold text-gray-800">問題の履歴</h3>
+        <h3 className="text-xl font-bold text-gray-800">{t('battle.history')}</h3>
         <div className="space-y-4">
           {gameState.questionHistory.map((record, index) => (
             <div
@@ -83,7 +86,7 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
                   >
                     {option}
                     {optionIndex === record.correctAnswerIndex && (
-                      <span className="ml-2 text-green-600">✓ 正解</span>
+                      <span className="ml-2 text-green-600">{t('battle.correctMark')}</span>
                     )}
                   </div>
                 ))}
@@ -91,7 +94,7 @@ const BattleResults: React.FC<BattleResultsProps> = ({ gameState }) => {
               
               {record.timeRemaining > 0 && (
                 <div className="mt-2 text-sm text-gray-600">
-                  回答時間: {record.timeRemaining.toFixed(1)}秒
+                  {t('battle.answerTime').replace('{time}', record.timeRemaining.toFixed(1))}
                 </div>
               )}
             </div>

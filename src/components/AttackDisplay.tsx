@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { AttackStrength } from '../types/game';
 
 interface AttackDisplayProps {
@@ -15,6 +16,7 @@ const AttackDisplay: React.FC<AttackDisplayProps> = ({
   isVisible 
 }) => {
   if (!isVisible || !attackStrength) return null;
+  const { t } = useLanguage();
   
   const getAttackColor = () => {
     switch (attackStrength) {
@@ -28,14 +30,7 @@ const AttackDisplay: React.FC<AttackDisplayProps> = ({
   };
   
   const getAttackLabel = () => {
-    switch (attackStrength) {
-      case 'weak': return '弱い';
-      case 'ok': return '普通';
-      case 'good': return '良い';
-      case 'effective': return '効果的';
-      case 'critical': return 'クリティカル';
-      default: return '攻撃';
-    }
+    return t(`attack.${attackStrength}`);
   };
 
   return (
