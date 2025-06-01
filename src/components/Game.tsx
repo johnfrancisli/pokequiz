@@ -52,12 +52,12 @@ const Game: React.FC = () => {
             <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-green-600">勝利！</h2>
             <BattleResults gameState={gameState} />
-            <div className="space-y-4">
+            <div className="space-y-4 mt-8">
               <button 
                 onClick={() => resetGame(true)}
                 className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
-                同じレベルでもう一度
+                同じ問題セットでもう一度
               </button>
               <button 
                 onClick={() => resetGame(false)}
@@ -75,12 +75,12 @@ const Game: React.FC = () => {
             <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-red-600">敗北！</h2>
             <BattleResults gameState={gameState} />
-            <div className="space-y-4">
+            <div className="space-y-4 mt-8">
               <button 
                 onClick={() => resetGame(true)}
                 className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
-                同じレベルでもう一度
+                同じ問題セットでもう一度
               </button>
               <button 
                 onClick={() => resetGame(false)}
