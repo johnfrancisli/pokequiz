@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HealthBarProps {
   current: number;
@@ -9,6 +10,7 @@ interface HealthBarProps {
 
 const HealthBar: React.FC<HealthBarProps> = ({ current, max, name, isPlayer = false }) => {
   const percentage = Math.max(0, Math.min(100, (current / max) * 100));
+  const { t } = useLanguage();
   
   // Calculate color based on health percentage
   const getHealthColor = () => {
@@ -22,7 +24,9 @@ const HealthBar: React.FC<HealthBarProps> = ({ current, max, name, isPlayer = fa
       <div className="mb-2">
         <div className="flex flex-col gap-1 px-3 py-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-md border border-white/20">
           <span className="text-sm font-bold text-gray-700 text-center">{name}</span>
-          <span className="text-sm font-medium text-gray-600 text-center">{current}/{max} HP</span>
+          <span className="text-sm font-medium text-gray-600 text-center">
+            {t('battle.hp').replace('{current}', current.toString()).replace('{max}', max.toString())}
+          </span>
         </div>
       </div>
       <div className="w-full bg-gray-200/50 rounded-full h-4 overflow-hidden backdrop-blur-sm">
