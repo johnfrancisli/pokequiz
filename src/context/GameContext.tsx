@@ -117,7 +117,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Start the game
   const selectStarter = useCallback((selectedStarter: StarterPokemon) => {
     const computerStarter = getRandomStarter();
-    const questionTime = QUESTION_TIMERS[defaultGameState.selectedLevel as keyof typeof QUESTION_TIMERS];
+    const questionTime = QUESTION_TIMERS[gameState.selectedLevel as keyof typeof QUESTION_TIMERS];
     
     // Initialize unasked questions with shuffled questions array
     const initialQuestions = shuffleArray([...questions]);
@@ -137,6 +137,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       gameStatus: 'in-progress',
       currentQuestion: getQuestionWithShuffledOptions(initialQuestions[0]),
+      selectedLevel: gameState.selectedLevel,
       timeRemaining: questionTime,
       maxQuestionTime: questionTime
     });
