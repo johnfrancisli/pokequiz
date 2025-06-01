@@ -9,14 +9,21 @@ interface GameContextType {
   selectStarter: (starter: StarterPokemon) => void;
   answerQuestion: (optionIndex: number) => void;
   resetGame: () => void;
-  playerAttackStrength: AttackStrength | null;
-  computerAttackStrength: AttackStrength | null;
-  playerAttackDamage: number;
-  computerAttackDamage: number;
-  showPlayerAttack: boolean;
-  showComputerAttack: boolean;
   starterList: StarterPokemon[];
 }
+
+const QUESTION_TIMERS = {
+  1: 10,
+  2: 8.5,
+  3: 7,
+  4: 5.5,
+  5: 4,
+  6: 3.5,
+  7: 3,
+  8: 2.5,
+  9: 2,
+  10: 1.5
+};
 
 const defaultGameState: GameState = {
   playerCharacter: {
@@ -36,23 +43,10 @@ const defaultGameState: GameState = {
     pokemonSlug: ''
   },
   currentQuestion: null,
-  timeRemaining: 5,
+  timeRemaining: QUESTION_TIMERS[1],
+  maxQuestionTime: QUESTION_TIMERS[1],
   gameStatus: 'selecting-level',
-  computerAttackTimer: 5,
   selectedLevel: 1
-};
-
-const ATTACK_INTERVALS = {
-  1: 10,
-  2: 8.5,
-  3: 7,
-  4: 5.5,
-  5: 4,
-  6: 3.5,
-  7: 3,
-  8: 2.5,
-  9: 2,
-  10: 1.5
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -61,12 +55,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [gameState, setGameState] = useState<GameState>(defaultGameState);
   const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
   const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
-  const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
-  const [computerAttackStrength, setComputerAttackStrength] = useState<AttackStrength | null>(null);
-  const [playerAttackDamage, setPlayerAttackDamage] = useState(0);
-  const [computerAttackDamage, setComputerAttackDamage] = useState(0);
-  const [showPlayerAttack, setShowPlayerAttack] = useState(false);
-  const [showComputerAttack, setShowComputerAttack] = useState(false);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
 
   const selectLevel = useCallback((level: number) => {
@@ -74,7 +62,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...prev,
       selectedLevel: level,
       gameStatus: 'selecting-starter',
-      computerAttackTimer: ATTACK_INTERVALS[level as keyof typeof ATTACK_INTERVALS]
+      timeRemaining: QUESTION_TIMERS[level as keyof typeof QUESTION_TIMERS],
+      maxQuestionTime: QUESTION_TIMERS[level as keyof typeof QUESTION_TIMERS]
     }));
   }, []);
 
@@ -96,8 +85,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setGameState(prev => ({
       ...prev,
       currentQuestion: questionWithShuffledOptions,
-      timeRemaining: 5,
-    }));
+      timeRemaining: QUESTION_TIMERS[prev.selectedLevel as keyof typeof QUESTION_TIMERS],
+    })); 
     setAnswerSubmitted(false);
   }, [unaskedQuestions]);
 
@@ -129,33 +118,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const resetGame = useCallback(() => {
     setGameState(defaultGameState);
     setUnaskedQuestions([]);
-    setPlayerAttackStrength(null);
-    setComputerAttackStrength(null);
-    setPlayerAttackDamage(0);
-    setComputerAttackDamage(0);
-    setShowPlayerAttack(false);
-    setShowComputerAttack(false);
     setAnswerSubmitted(false);
   }, []);
-
-  // Calculate attack strength based on time remaining
-  const calculateAttackStrength = (timeRemaining: number): AttackStrength => {
-    if (timeRemaining > 4) return 'critical';
-    if (timeRemaining > 3) return 'strong';
-    if (timeRemaining > 1) return 'medium';
-    return 'weak';
-  };
-
-  // Calculate damage based on attack strength
-  const calculateDamage = (strength: AttackStrength): number => {
-    switch (strength) {
-      case 'critical': return 15;
-      case 'strong': return 12;
-      case 'medium': return 8;
-      case 'weak': return 5;
-      default: return 0;
-    }
-  };
 
   // Handle player answering a question
   const answerQuestion = useCallback((optionIndex: number) => {
@@ -165,22 +129,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const correct = optionIndex === gameState.currentQuestion?.correctAnswer;
     
     if (correct) {
-      const strength = calculateAttackStrength(gameState.timeRemaining);
-      const damage = calculateDamage(strength);
+      const damage = Math.ceil((gameState.timeRemaining / gameState.maxQuestionTime) * 10);
       
-      setPlayerAttackStrength(strength);
-      setPlayerAttackDamage(damage);
-      
-      // Player attacks
       setGameState(prev => ({
         ...prev,
         playerCharacter: { ...prev.playerCharacter, isAttacking: true },
         computerCharacter: { ...prev.computerCharacter, isHit: true }
       }));
       
-      setShowPlayerAttack(true);
-      
-      // After a short delay, update health and reset attack/hit status
       setTimeout(() => {
         setGameState(prev => {
           const newComputerHealth = Math.max(0, prev.computerCharacter.health - damage);
@@ -200,34 +156,27 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             gameStatus: newGameStatus
           };
         });
-        
-        setShowPlayerAttack(false);
-        
-        // Load a new question if the game is still in progress
-        setTimeout(() => {
-          setGameState(prev => {
-            if (prev.gameStatus === 'in-progress') {
-              loadNewQuestion();
-            }
-            return prev;
-          });
-        }, 500);
       }, 1000);
-    } else {
-      // Wrong answer - player takes 10 damage
-      const strength: AttackStrength = 'strong';
-      const damage = 8;
       
-      setComputerAttackStrength(strength);
-      setComputerAttackDamage(damage);
+      
+      // Load a new question if the game is still in progress
+      setTimeout(() => {
+        setGameState(prev => {
+          if (prev.gameStatus === 'in-progress') {
+            loadNewQuestion();
+          }
+          return prev;
+        }, 500);
+      });
+    } else {
+      const timePassed = gameState.maxQuestionTime - gameState.timeRemaining;
+      const damage = Math.ceil((timePassed / gameState.maxQuestionTime) * 10);
       
       setGameState(prev => ({
         ...prev,
         computerCharacter: { ...prev.computerCharacter, isAttacking: true },
         playerCharacter: { ...prev.playerCharacter, isHit: true }
       }));
-      
-      setShowComputerAttack(true);
       
       setTimeout(() => {
         setGameState(prev => {
@@ -248,16 +197,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             gameStatus: newGameStatus
           };
         });
-        
-        setShowComputerAttack(false);
-        
-        // Load new question if game continues
-        setTimeout(() => {
-          if (gameState.gameStatus === 'in-progress') {
-            loadNewQuestion();
-          }
-        }, 500);
       }, 1000);
+      
+      
+      // Load new question if game continues
+      setTimeout(() => {
+        if (gameState.gameStatus === 'in-progress') {
+          loadNewQuestion();
+        }
+      }, 500);
     }
   }, [gameState, answerSubmitted, loadNewQuestion]);
 
@@ -271,20 +219,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           clearInterval(timer);
           setAnswerSubmitted(true);
 
-          // Time ran out - player takes small damage
-          const strength: AttackStrength = 'medium';
-          const damage = 3;
-          
-          setComputerAttackStrength(strength);
-          setComputerAttackDamage(damage);
+          const damage = 10; // Full damage when time runs out
           
           setGameState(prevState => ({
             ...prevState,
             computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
             playerCharacter: { ...prevState.playerCharacter, isHit: true }
           }));
-          
-          setShowComputerAttack(true);
           
           setTimeout(() => {
             setGameState(prevState => {
@@ -306,8 +247,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
               };
             });
             
-            setShowComputerAttack(false);
-          
+            
             // Load new question if game continues
             setTimeout(() => {
               if (gameState.gameStatus === 'in-progress') {
@@ -329,71 +269,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => clearInterval(timer);
   }, [gameState.gameStatus, gameState.timeRemaining, answerSubmitted, loadNewQuestion]);
 
-  // Computer attack timer
-  useEffect(() => {
-    if (gameState.gameStatus !== 'in-progress') return;
-    
-    const attackTimer = setInterval(() => {
-      setGameState(prev => {
-        const interval = ATTACK_INTERVALS[prev.selectedLevel as keyof typeof ATTACK_INTERVALS];
-        const newComputerAttackTimer = prev.computerAttackTimer - 0.1;
-        
-        if (newComputerAttackTimer <= 0) {
-          // Computer attacks
-          const strength: AttackStrength = 'medium';
-          const damage = 5;
-          
-          setComputerAttackStrength(strength);
-          setComputerAttackDamage(damage);
-          
-          setGameState(prevState => ({
-            ...prevState,
-            computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
-            playerCharacter: { ...prevState.playerCharacter, isHit: true }
-          }));
-          
-          setShowComputerAttack(true);
-          
-          setTimeout(() => {
-            setGameState(prevState => {
-              const newPlayerHealth = Math.max(0, prevState.playerCharacter.health - damage);
-              const newGameStatus = newPlayerHealth <= 0 ? 'computer-won' : prevState.gameStatus;
-              
-              return {
-                ...prevState,
-                playerCharacter: {
-                  ...prevState.playerCharacter,
-                  health: newPlayerHealth,
-                  isHit: false
-                },
-                computerCharacter: {
-                  ...prevState.computerCharacter,
-                  isAttacking: false
-                },
-                gameStatus: newGameStatus,
-                computerAttackTimer: interval
-              };
-            });
-            
-            setShowComputerAttack(false);
-          }, 1000);
-          
-          return {
-            ...prev,
-            computerAttackTimer: interval
-          };
-        }
-        
-        return {
-          ...prev,
-          computerAttackTimer: newComputerAttackTimer
-        };
-      });
-    }, 100);
-    
-    return () => clearInterval(attackTimer);
-  }, [gameState.gameStatus]);
-
   return (
     <GameContext.Provider value={{
       gameState,
@@ -401,12 +276,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       selectStarter,
       answerQuestion,
       resetGame,
-      playerAttackStrength,
-      computerAttackStrength,
-      playerAttackDamage,
-      computerAttackDamage,
-      showPlayerAttack,
-      showComputerAttack,
       starterList
     }}>
       {children}

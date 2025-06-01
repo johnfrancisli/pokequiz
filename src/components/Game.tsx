@@ -13,13 +13,7 @@ const Game: React.FC = () => {
   const { 
     gameState, 
     answerQuestion, 
-    resetGame,
-    playerAttackStrength,
-    computerAttackStrength,
-    playerAttackDamage,
-    computerAttackDamage,
-    showPlayerAttack,
-    showComputerAttack
+    resetGame
   } = useGame();
 
   const renderGameStatus = () => {
@@ -85,24 +79,6 @@ const Game: React.FC = () => {
                   name={gameState.computerCharacter.name}
                 />
               </div>
-              
-              {showPlayerAttack && (
-                <AttackDisplay 
-                  attackStrength={playerAttackStrength}
-                  isPlayerAttack={true}
-                  damage={playerAttackDamage}
-                  isVisible={showPlayerAttack}
-                />
-              )}
-              
-              {showComputerAttack && (
-                <AttackDisplay 
-                  attackStrength={computerAttackStrength}
-                  isPlayerAttack={false}
-                  damage={computerAttackDamage}
-                  isVisible={showComputerAttack}
-                />
-              )}
             </div>
             
             <div className="flex justify-between mb-8">
@@ -110,19 +86,13 @@ const Game: React.FC = () => {
               <Character character={gameState.computerCharacter} isPlayer={false} />
             </div>
             
-            <Timer timeRemaining={gameState.timeRemaining} maxTime={5} />
+            <Timer timeRemaining={gameState.timeRemaining} maxTime={gameState.maxQuestionTime} />
             
             <QuestionBox 
               question={gameState.currentQuestion} 
               onAnswer={answerQuestion}
               disabled={false}
             />
-            
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-500">
-                Computer attacks in: {gameState.computerAttackTimer.toFixed(1)}s
-              </p>
-            </div>
           </>
         );
       
