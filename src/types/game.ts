@@ -24,6 +24,8 @@ export interface GameState {
   selectedLevel: number;
 }
 
+export type AttackStrength = 'weak' | 'ok' | 'good' | 'effective' | 'critical';
+
 export interface CharacterIcon {
   id: string;
   name: string;
