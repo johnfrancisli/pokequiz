@@ -4,16 +4,16 @@ import { Question } from '../types/game';
 interface QuestionBoxProps {
   question: Question | null;
   onAnswer: (optionIndex: number) => void;
-  disabled: boolean;
+  isAnswerSubmitted: boolean;
+  playerSelectedOptionIndex: number | null;
 }
 
-const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled }) => {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  
-  // Reset selected option when question changes
-  useEffect(() => {
-    setSelectedOption(null);
-  }, [question]);
+const QuestionBox: React.FC<QuestionBoxProps> = ({ 
+  question, 
+  onAnswer, 
+  isAnswerSubmitted,
+  playerSelectedOptionIndex 
+}) => {
   
   if (!question) {
     return (
@@ -24,10 +24,28 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled 
   }
 
   const handleOptionClick = (index: number) => {
-    if (disabled) return;
-    
-    setSelectedOption(index);
+    if (isAnswerSubmitted) return;
     onAnswer(index);
+  };
+
+  const getOptionClassName = (optionIndex: number) => {
+    const baseClasses = "p-3 rounded-lg text-left transition-all duration-200 ";
+    
+    if (isAnswerSubmitted) {
+      // Correct answer is always highlighted in green
+      if (optionIndex === question.correctAnswer) {
+        return baseClasses + "bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-500 text-green-800";
+      }
+      // Wrong selected answer is highlighted in red
+      if (optionIndex === playerSelectedOptionIndex && optionIndex !== question.correctAnswer) {
+        return baseClasses + "bg-gradient-to-r from-red-100 to-pink-100 border-2 border-red-500 text-red-800";
+      }
+      // Other options are greyed out
+      return baseClasses + "bg-gray-50 border-2 border-gray-200 text-gray-500 opacity-70";
+    }
+    
+    // Default state (not answered yet)
+    return baseClasses + "bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-gray-800 border-2 border-transparent";
   };
 
   return (
@@ -39,14 +57,8 @@ const QuestionBox: React.FC<QuestionBoxProps> = ({ question, onAnswer, disabled 
           <button
             key={index}
             onClick={() => handleOptionClick(index)}
-            disabled={disabled}
-            className={`p-3 rounded-lg text-left transition-all duration-200 ${
-              selectedOption === index
-                ? selectedOption === question.correctAnswer 
-                  ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-500 text-green-800' 
-                  : 'bg-gradient-to-r from-red-100 to-pink-100 border-2 border-red-500 text-red-800'
-                : 'bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 text-gray-800 border-2 border-transparent'
-              } ${disabled ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
+            disabled={isAnswerSubmitted}
+            className={getOptionClassName(index)}
           >
             <span className="font-medium">{option}</span>
           </button>

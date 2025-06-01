@@ -31,6 +31,8 @@ export interface GameState {
   selectedLevel: number;
   currentQuestionSetId: string | null;
   questionHistory: AnswerRecord[];
+  answerSubmitted: boolean;
+  currentQuestionPlayerSelectedOption: number | null;
 }
 
 export type AttackStrength = 'weak' | 'ok' | 'good' | 'effective' | 'critical';

@@ -142,7 +142,8 @@ const Game: React.FC = () => {
             <QuestionBox 
               question={gameState.currentQuestion} 
               onAnswer={answerQuestion}
-              disabled={false}
+              isAnswerSubmitted={gameState.answerSubmitted}
+              playerSelectedOptionIndex={gameState.currentQuestionPlayerSelectedOption}
             />
           </>
         );

@@ -55,7 +55,9 @@ const defaultGameState: GameState = {
   gameStatus: 'selecting-question-set',
   selectedLevel: 1,
   currentQuestionSetId: null,
-  questionHistory: []
+  questionHistory: [],
+  answerSubmitted: false,
+  currentQuestionPlayerSelectedOption: null
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -68,7 +70,6 @@ export const GameProvider: React.FC<{
   const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
   const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
-  const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
   const [computerAttackStrength, setComputerAttackStrength] = useState<AttackStrength | null>(null);
   const [playerAttackDamage, setPlayerAttackDamage] = useState(0);
@@ -144,9 +145,10 @@ export const GameProvider: React.FC<{
       ...prev,
       currentQuestion: questionWithShuffledOptions,
       timeRemaining: questionTime,
-      maxQuestionTime: questionTime
+      maxQuestionTime: questionTime,
+      answerSubmitted: false,
+      currentQuestionPlayerSelectedOption: null
     })); 
-    setAnswerSubmitted(false);
   }, [unaskedQuestions, gameState.selectedLevel, allQuestions]);
 
   // Start the game
@@ -199,9 +201,8 @@ export const GameProvider: React.FC<{
 
   // Handle player answering a question
   const answerQuestion = useCallback((optionIndex: number) => {
-    if (answerSubmitted || gameState.gameStatus !== 'in-progress') return;
+    if (gameState.answerSubmitted || gameState.gameStatus !== 'in-progress') return;
     
-    setAnswerSubmitted(true);
     const currentQuestion = gameState.currentQuestion;
     if (!currentQuestion) return;
 
@@ -226,6 +227,8 @@ export const GameProvider: React.FC<{
       
       setGameState(prev => ({
         ...prev,
+        answerSubmitted: true,
+        currentQuestionPlayerSelectedOption: optionIndex,
         questionHistory: [...prev.questionHistory, answerRecord],
         playerCharacter: { ...prev.playerCharacter, isAttacking: true },
         computerCharacter: { ...prev.computerCharacter, isHit: true }
@@ -276,6 +279,8 @@ export const GameProvider: React.FC<{
       
       setGameState(prev => ({
         ...prev,
+        answerSubmitted: true,
+        currentQuestionPlayerSelectedOption: optionIndex,
         computerCharacter: { ...prev.computerCharacter, isAttacking: true },
         playerCharacter: { ...prev.playerCharacter, isHit: true }
       }));
@@ -315,13 +320,12 @@ export const GameProvider: React.FC<{
 
   // Game timer logic
   useEffect(() => {
-    if (gameState.gameStatus !== 'in-progress' || answerSubmitted) return;
+    if (gameState.gameStatus !== 'in-progress' || gameState.answerSubmitted) return;
     
     const timer = setInterval(() => {
       setGameState(prev => {
         if (prev.timeRemaining <= 0) {
           clearInterval(timer);
-          setAnswerSubmitted(true);
           
           // Record the timeout
           const answerRecord: AnswerRecord = {
@@ -338,6 +342,8 @@ export const GameProvider: React.FC<{
           
           setGameState(prevState => ({
             ...prevState,
+            answerSubmitted: true,
+            currentQuestionPlayerSelectedOption: null,
             questionHistory: [...prevState.questionHistory, answerRecord],
             computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
             playerCharacter: { ...prevState.playerCharacter, isHit: true }
@@ -384,7 +390,6 @@ export const GameProvider: React.FC<{
     }, 100);
     
     return () => clearInterval(timer);
-  }, [gameState.gameStatus, gameState.timeRemaining, answerSubmitted, loadNewQuestion]);
 
   return (
     <GameContext.Provider value={{
