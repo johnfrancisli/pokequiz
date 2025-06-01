@@ -7,6 +7,7 @@ import QuestionBox from './QuestionBox';
 import AttackDisplay from './AttackDisplay';
 import LevelSelection from './LevelSelection';
 import StarterSelection from './StarterSelection';
+import QuestionSetSelection from './QuestionSetSelection';
 
 const pokemonLogoUrl = new URL('../assets/pokemon-logo.png', import.meta.url).href;
 
@@ -25,6 +26,14 @@ const Game: React.FC = () => {
 
   const renderGameStatus = () => {
     switch (gameState.gameStatus) {
+      case 'selecting-question-set':
+        return (
+          <div className="text-center space-y-6">
+            <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
+            <QuestionSetSelection />
+          </div>
+        );
+
       case 'selecting-level':
         return <LevelSelection />;
 
@@ -42,12 +51,20 @@ const Game: React.FC = () => {
             <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-green-600">勝利！</h2>
             <p className="mb-6">あなたの知識で相手を倒しました！</p>
-            <button 
-              onClick={resetGame}
-              className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-            >
-              もう一度プレイ
-            </button>
+            <div className="space-y-4">
+              <button 
+                onClick={() => resetGame(true)}
+                className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+              >
+                同じレベルでもう一度
+              </button>
+              <button 
+                onClick={() => resetGame(false)}
+                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+              >
+                新しい問題セットを選ぶ
+              </button>
+            </div>
           </div>
         );
       
@@ -57,12 +74,20 @@ const Game: React.FC = () => {
             <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-red-600">敗北！</h2>
             <p className="mb-6">コンピューターがあなたを倒しました！</p>
-            <button 
-              onClick={resetGame}
-              className="px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-            >
-              もう一度挑戦
-            </button>
+            <div className="space-y-4">
+              <button 
+                onClick={() => resetGame(true)}
+                className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+              >
+                同じレベルでもう一度
+              </button>
+              <button 
+                onClick={() => resetGame(false)}
+                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+              >
+                新しい問題セットを選ぶ
+              </button>
+            </div>
           </div>
         );
       
