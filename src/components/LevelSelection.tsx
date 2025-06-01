@@ -18,8 +18,8 @@ const LevelSelection: React.FC = () => {
           <button
             key={level}
             onClick={() => selectLevel(level)}
-            className="flex flex-col items-center p-6 rounded-xl bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-white/20 
-              transition-all hover:shadow-lg transform hover:-translate-y-1"
+            className="flex flex-col items-center p-6 rounded-xl bg-white/50 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-indigo-500/10 backdrop-blur-sm border border-white/20 
+              transition-all hover:shadow-lg transform hover:-translate-y-1 hover:border-blue-200/50"
           >
             <span className="text-xl font-bold text-gray-800 mb-2">{t('level.' + level)}</span>
           </button>

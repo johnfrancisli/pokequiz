@@ -55,15 +55,15 @@ const Game: React.FC = () => {
             <div className="space-y-4 mt-8">
               <button 
                 onClick={() => resetGame(true)}
-                className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
-                同じ問題セットでもう一度
+                {t('battle.sameQuestions')}
               </button>
               <button 
                 onClick={() => resetGame(false)}
-                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                className="w-full px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
-                新しい問題セットを選ぶ
+                {t('battle.newQuestions')}
               </button>
             </div>
           </div>
@@ -78,15 +78,15 @@ const Game: React.FC = () => {
             <div className="space-y-4 mt-8">
               <button 
                 onClick={() => resetGame(true)}
-                className="w-full px-8 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
-                同じ問題セットでもう一度
+                {t('battle.sameQuestions')}
               </button>
               <button 
                 onClick={() => resetGame(false)}
-                className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                className="w-full px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
-                新しい問題セットを選ぶ
+                {t('battle.newQuestions')}
               </button>
             </div>
           </div>

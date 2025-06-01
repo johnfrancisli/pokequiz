@@ -40,7 +40,7 @@ const QuestionSetSelection: React.FC = () => {
         
         <button
           type="submit"
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
           disabled={!questionSetId.trim()}
         >
           {t('questionSet.start')}

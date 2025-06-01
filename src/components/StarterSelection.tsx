@@ -15,7 +15,7 @@ const StarterSelection: React.FC = () => {
           <button
             key={pokemon.idx}
             onClick={() => selectStarter(pokemon)}
-            className="flex items-center p-4 rounded-xl bg-white/50 hover:bg-white/80 backdrop-blur-sm border border-white/20 transition-all hover:shadow-lg transform hover:-translate-y-1"
+            className="flex items-center p-4 rounded-xl bg-white/50 hover:bg-gradient-to-r hover:from-blue-500/10 hover:to-indigo-500/10 backdrop-blur-sm border border-white/20 transition-all hover:shadow-lg transform hover:-translate-y-1 hover:border-blue-200/50"
           >
             <img 
               src={pokemon.imageUrl} 
