@@ -1,0 +1,488 @@
+{
+  "id": "sho1kanji",
+  "name": "Grade 1の漢字読み方練習",
+  "description": "Grade 1で習う漢字の読み方を学ぶための問題セット",
+  "questions": [
+    {
+      "id": 1,
+      "text": "一",
+      "options": ["いち", "いつ", "いっつ", "いき"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 2,
+      "text": "右",
+      "options": ["みぎ", "みき", "みじ", "みご"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 3,
+      "text": "雨",
+      "options": ["あめ", "うめ", "あも", "あね"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 4,
+      "text": "円",
+      "options": ["えん", "おん", "えく", "えち"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 5,
+      "text": "王",
+      "options": ["おう", "おお", "うお", "おい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 6,
+      "text": "音",
+      "options": ["おと", "こと", "おど", "おぬ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 7,
+      "text": "下",
+      "options": ["した", "しも", "しや", "したつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 8,
+      "text": "火",
+      "options": ["ひ", "ふ", "び", "ひあ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 9,
+      "text": "花",
+      "options": ["はな", "はね", "ばな", "はま"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 10,
+      "text": "貝",
+      "options": ["かい", "がい", "かき", "かん"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 11,
+      "text": "学",
+      "options": ["がく", "らく", "かく", "がき"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 12,
+      "text": "気",
+      "options": ["き", "け", "ぎ", "きい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 13,
+      "text": "九",
+      "options": ["きゅう", "きゅ", "きゅく", "きう"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 14,
+      "text": "休",
+      "options": ["やす", "やつ", "やそ", "やすい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 15,
+      "text": "玉",
+      "options": ["たま", "たみ", "だま", "たら"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 16,
+      "text": "金",
+      "options": ["きん", "きに", "ぎん", "きく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 17,
+      "text": "空",
+      "options": ["そら", "さら", "そる", "そらい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 18,
+      "text": "月",
+      "options": ["つき", "つぎ", "きつ", "つく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 19,
+      "text": "犬",
+      "options": ["いぬ", "いぬふ", "うぬ", "いの"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 20,
+      "text": "見",
+      "options": ["みる", "みせる", "みるい", "きる"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 21,
+      "text": "五",
+      "options": ["ご", "こ", "ごう", "ごこ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 22,
+      "text": "口",
+      "options": ["くち", "こち", "くちい", "くつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 23,
+      "text": "校",
+      "options": ["こう", "こお", "こうつ", "そう"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 24,
+      "text": "左",
+      "options": ["ひだり", "ひたり", "ひだりい", "ひだつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 25,
+      "text": "三",
+      "options": ["さん", "さんい", "せん", "さんつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 26,
+      "text": "山",
+      "options": ["やま", "やざ", "やまい", "やみ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 27,
+      "text": "子",
+      "options": ["こ", "そ", "こい", "こつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 28,
+      "text": "四",
+      "options": ["し", "しち", "す", "ち"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 29,
+      "text": "糸",
+      "options": ["いと", "いど", "いとこ", "いとい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 30,
+      "text": "字",
+      "options": ["じ", "ち", "ず", "し"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 31,
+      "text": "耳",
+      "options": ["みみ", "みかみ", "みむ", "みめ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 32,
+      "text": "七",
+      "options": ["しち", "しちい", "いち", "なに"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 33,
+      "text": "車",
+      "options": ["くるま", "くるまい", "くるみ", "くるも"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 34,
+      "text": "手",
+      "options": ["て", "てい", "てつ", "で"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 35,
+      "text": "十",
+      "options": ["じゅう", "じゅ", "ちゅう", "しゅう"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 36,
+      "text": "出",
+      "options": ["でる", "でるい", "でら", "でつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 37,
+      "text": "女",
+      "options": ["おんな", "おな", "じょ", "おめ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 38,
+      "text": "小",
+      "options": ["ちいさい", "ちいさ", "しょう", "こ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 39,
+      "text": "上",
+      "options": ["うえ", "うわ", "うえい", "うえう"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 40,
+      "text": "森",
+      "options": ["もり", "もりい", "むり", "もりく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 41,
+      "text": "人",
+      "options": ["ひと", "にん", "ひとつ", "ひとい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 42,
+      "text": "水",
+      "options": ["みず", "みぞ", "みずい", "みす"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 43,
+      "text": "正",
+      "options": ["ただしい", "ただし", "しょう", "ただち"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 44,
+      "text": "生",
+      "options": ["いきる", "せい", "いける", "いきり"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 45,
+      "text": "青",
+      "options": ["あお", "あか", "おあ", "あおい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 46,
+      "text": "夕",
+      "options": ["ゆう", "ゆ", "ゆうい", "ゆつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 47,
+      "text": "石",
+      "options": ["いし", "いち", "いじ", "いじゅ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 48,
+      "text": "赤",
+      "options": ["あか", "あき", "あさ", "あた"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 49,
+      "text": "千",
+      "options": ["せん", "せつ", "さん", "ぜん"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 50,
+      "text": "川",
+      "options": ["かわ", "かわい", "がわ", "かわく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 51,
+      "text": "先",
+      "options": ["さき", "せん", "さく", "さきい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 52,
+      "text": "早",
+      "options": ["はやい", "はや", "さよ", "はやく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 53,
+      "text": "草",
+      "options": ["くさ", "くさり", "くさく", "くす"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 54,
+      "text": "足",
+      "options": ["あし", "あじ", "おし", "あち"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 55,
+      "text": "村",
+      "options": ["むら", "もら", "むり", "めら"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 56,
+      "text": "大",
+      "options": ["おおきい", "おおき", "だい", "たかい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 57,
+      "text": "男",
+      "options": ["おとこ", "おとこえ", "なん", "おとこい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 58,
+      "text": "竹",
+      "options": ["たけ", "たこ", "たけい", "たけえ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 59,
+      "text": "中",
+      "options": ["なか", "なき", "うち", "なかい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 60,
+      "text": "虫",
+      "options": ["むし", "むしろ", "ぶし", "むしゆ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 61,
+      "text": "町",
+      "options": ["まち", "まちい", "まちら", "まちく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 62,
+      "text": "天",
+      "options": ["てん", "てつ", "ねん", "てんい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 63,
+      "text": "田",
+      "options": ["た", "だ", "てん", "たあ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 64,
+      "text": "土",
+      "options": ["つち", "とち", "つちい", "つちつ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 65,
+      "text": "二",
+      "options": ["に", "にい", "にち", "にゅ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 66,
+      "text": "日",
+      "options": ["ひ", "び", "にち", "ひい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 67,
+      "text": "入",
+      "options": ["いる", "にゅう", "いり", "いるい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 68,
+      "text": "年",
+      "options": ["とし", "ねん", "としろ", "とち"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 69,
+      "text": "白",
+      "options": ["しろ", "はく", "しら", "しろい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 70,
+      "text": "八",
+      "options": ["はち", "はつ", "はた", "ぱち"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 71,
+      "text": "百",
+      "options": ["ひゃく", "びゃく", "ひゃつ", "ひゃあ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 72,
+      "text": "文",
+      "options": ["ぶん", "もん", "ふん", "ぶんい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 73,
+      "text": "木",
+      "options": ["き", "きい", "きょ", "きく"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 74,
+      "text": "本",
+      "options": ["ほん", "ほんど", "ほう", "へん"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 75,
+      "text": "名",
+      "options": ["な", "みょう", "なの", "めい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 76,
+      "text": "目",
+      "options": ["め", "もく", "めい", "めい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 77,
+      "text": "立",
+      "options": ["たつ", "りつ", "たち", "たつい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 78,
+      "text": "力",
+      "options": ["ちから", "ちかい", "りき", "ちからい"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 79,
+      "text": "林",
+      "options": ["はやし", "りん", "はや", "はやしろ"],
+      "correctAnswer": 0
+    },
+    {
+      "id": 80,
+      "text": "六",
+      "options": ["ろく", "ろくい", "りく", "ろき"],
+      "correctAnswer": 0
+    }
+  ]
+}
+
