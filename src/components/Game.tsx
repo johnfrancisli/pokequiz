@@ -1,5 +1,6 @@
 import React from 'react';
 import { useGame } from '../context/GameContext';
+import { useLanguage } from '../context/LanguageContext';
 import Character from './Character';
 import HealthBar from './HealthBar';
 import Timer from './Timer';
@@ -24,6 +25,8 @@ const Game: React.FC = () => {
     showPlayerAttack,
     showComputerAttack
   } = useGame();
+  
+  const { t } = useLanguage();
 
   const renderGameStatus = () => {
     switch (gameState.gameStatus) {
