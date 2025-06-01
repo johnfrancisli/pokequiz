@@ -137,7 +137,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         pokemonSlug: computerStarter.slug
       },
       gameStatus: 'in-progress',
-      currentQuestion: getQuestionWithShuffledOptions(initialQuestions[0])
       currentQuestion: getQuestionWithShuffledOptions(initialQuestions[0]),
       timeRemaining: questionTime,
       maxQuestionTime: questionTime
