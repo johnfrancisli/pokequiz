@@ -18,9 +18,10 @@ const AttackDisplay: React.FC<AttackDisplayProps> = ({
   
   const getAttackColor = () => {
     switch (attackStrength) {
-      case 'weak': return 'text-yellow-500';
-      case 'medium': return 'text-orange-500';
-      case 'strong': return 'text-red-500';
+      case 'weak': return 'text-gray-500';
+      case 'ok': return 'text-yellow-500';
+      case 'good': return 'text-orange-500';
+      case 'effective': return 'text-red-500';
       case 'critical': return 'text-purple-500';
       default: return 'text-gray-500';
     }
@@ -28,9 +29,10 @@ const AttackDisplay: React.FC<AttackDisplayProps> = ({
   
   const getAttackLabel = () => {
     switch (attackStrength) {
-      case 'weak': return '弱い攻撃';
-      case 'medium': return '普通の攻撃';
-      case 'strong': return '強い攻撃';
+      case 'weak': return '弱い';
+      case 'ok': return '普通';
+      case 'good': return '良い';
+      case 'effective': return '効果的';
       case 'critical': return 'クリティカル';
       default: return '攻撃';
     }

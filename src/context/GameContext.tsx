@@ -10,6 +10,12 @@ interface GameContextType {
   answerQuestion: (optionIndex: number) => void;
   resetGame: () => void;
   starterList: StarterPokemon[];
+  playerAttackStrength: AttackStrength | null;
+  computerAttackStrength: AttackStrength | null;
+  playerAttackDamage: number;
+  computerAttackDamage: number;
+  showPlayerAttack: boolean;
+  showComputerAttack: boolean;
 }
 
 const QUESTION_TIMERS = {
@@ -56,6 +62,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
   const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
+  const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
+  const [computerAttackStrength, setComputerAttackStrength] = useState<AttackStrength | null>(null);
+  const [playerAttackDamage, setPlayerAttackDamage] = useState(0);
+  const [computerAttackDamage, setComputerAttackDamage] = useState(0);
+  const [showPlayerAttack, setShowPlayerAttack] = useState(false);
+  const [showComputerAttack, setShowComputerAttack] = useState(false);
+
+  const getAttackStrengthFromPercentage = (percentage: number): AttackStrength => {
+    if (percentage >= 80) return 'critical';
+    if (percentage >= 60) return 'effective';
+    if (percentage >= 40) return 'good';
+    if (percentage >= 20) return 'ok';
+    return 'weak';
+  };
 
   const selectLevel = useCallback((level: number) => {
     setGameState(prev => ({
@@ -119,6 +139,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setGameState(defaultGameState);
     setUnaskedQuestions([]);
     setAnswerSubmitted(false);
+    setPlayerAttackStrength(null);
+    setComputerAttackStrength(null);
+    setPlayerAttackDamage(0);
+    setComputerAttackDamage(0);
+    setShowPlayerAttack(false);
+    setShowComputerAttack(false);
   }, []);
 
   // Handle player answering a question
@@ -129,7 +155,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const correct = optionIndex === gameState.currentQuestion?.correctAnswer;
     
     if (correct) {
-      const damage = Math.ceil((gameState.timeRemaining / gameState.maxQuestionTime) * 10);
+      const percentage = (gameState.timeRemaining / gameState.maxQuestionTime) * 100;
+      const damage = Math.ceil((percentage / 100) * 10);
+      const strength = getAttackStrengthFromPercentage(percentage);
+      
+      setPlayerAttackStrength(strength);
+      setPlayerAttackDamage(damage);
+      setShowPlayerAttack(true);
       
       setGameState(prev => ({
         ...prev,
@@ -156,6 +188,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             gameStatus: newGameStatus
           };
         });
+        
+        setShowPlayerAttack(false);
       }, 1000);
       
       
@@ -170,7 +204,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     } else {
       const timePassed = gameState.maxQuestionTime - gameState.timeRemaining;
-      const damage = Math.ceil((timePassed / gameState.maxQuestionTime) * 10);
+      const percentage = (timePassed / gameState.maxQuestionTime) * 100;
+      const damage = Math.ceil((percentage / 100) * 10);
+      const strength = getAttackStrengthFromPercentage(percentage);
+      
+      setComputerAttackStrength(strength);
+      setComputerAttackDamage(damage);
+      setShowComputerAttack(true);
       
       setGameState(prev => ({
         ...prev,
@@ -197,6 +237,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
             gameStatus: newGameStatus
           };
         });
+        
+        setShowComputerAttack(false);
       }, 1000);
       
       
@@ -219,7 +261,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           clearInterval(timer);
           setAnswerSubmitted(true);
 
-          const damage = 10; // Full damage when time runs out
+          const damage = 10;
+          setComputerAttackStrength('critical');
+          setComputerAttackDamage(damage);
+          setShowComputerAttack(true);
           
           setGameState(prevState => ({
             ...prevState,
@@ -247,6 +292,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
               };
             });
             
+            setShowComputerAttack(false);
             
             // Load new question if game continues
             setTimeout(() => {
@@ -276,7 +322,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       selectStarter,
       answerQuestion,
       resetGame,
-      starterList
+      starterList,
+      playerAttackStrength,
+      computerAttackStrength,
+      playerAttackDamage,
+      computerAttackDamage,
+      showPlayerAttack,
+      showComputerAttack
     }}>
       {children}
     </GameContext.Provider>
