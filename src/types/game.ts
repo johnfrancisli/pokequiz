@@ -19,12 +19,10 @@ export interface GameState {
   computerCharacter: Character;
   currentQuestion: Question | null;
   timeRemaining: number;
+  maxQuestionTime: number;
   gameStatus: 'selecting-level' | 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
-  computerAttackTimer: number;
   selectedLevel: number;
 }
-
-export type AttackStrength = 'weak' | 'medium' | 'strong' | 'critical';
 
 export interface CharacterIcon {
   id: string;
