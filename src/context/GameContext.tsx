@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useCallback, useContext } fr
 import { GameState, Question, AttackStrength, Character } from '../types/game';
 import { shuffleArray, getQuestionWithShuffledOptions, loadQuestionSetData } from '../data/questions';
 import { getStarterPokemonList, getRandomStarter, StarterPokemon } from '../utils/pokemonUtils';
+import { useLanguage } from './LanguageContext';
 
 interface GameContextType {
   gameState: GameState;
@@ -67,7 +68,8 @@ export const GameProvider: React.FC<{
   initialQuestionSetId?: string | null;
 }> = ({ children, initialQuestionSetId }) => {
   const [gameState, setGameState] = useState<GameState>(defaultGameState);
-  const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
+  const { language } = useLanguage();
+  const [starterList, setStarterList] = useState<StarterPokemon[]>(getStarterPokemonList(language));
   const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
   const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
@@ -151,9 +153,14 @@ export const GameProvider: React.FC<{
     })); 
   }, [unaskedQuestions, gameState.selectedLevel, allQuestions]);
 
+  // Update starter list when language changes
+  useEffect(() => {
+    setStarterList(getStarterPokemonList(language));
+  }, [language]);
+
   // Start the game
   const selectStarter = useCallback((selectedStarter: StarterPokemon) => {
-    const computerStarter = getRandomStarter();
+    const computerStarter = getRandomStarter(language);
     const questionTime = QUESTION_TIMERS[gameState.selectedLevel as keyof typeof QUESTION_TIMERS];
     
     // Initialize unasked questions with shuffled questions array
@@ -178,7 +185,7 @@ export const GameProvider: React.FC<{
       timeRemaining: questionTime,
       maxQuestionTime: questionTime
     });
-  }, [gameState.selectedLevel, allQuestions]);
+  }, [gameState.selectedLevel, allQuestions, language]);
 
   // Reset the game
   const resetGame = useCallback((keepLevelAndQuestionSet: boolean = false) => {
