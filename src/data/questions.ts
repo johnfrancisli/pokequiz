@@ -1,11 +1,5 @@
-import { Question } from '../types/game';
+import { Question, QuestionSet } from '../types/game';
 
-// 各 question の options[0] が正解の読み仮名となるように保持しておく
-export const questions: Question[] = [
-  {
-    id: 1,
-    text: "意味",
-    options: ["いみ", "いま", "うみ", "えいみ"],
     correctAnswer: 0
   },
   {
@@ -275,10 +269,20 @@ export const questions: Question[] = [
   {
     id: 46,
     text: "三十秒",
-    options: ["さんじゅうびょう", "さんじゅびょう", "さんじゅうびょお", "さんじゅうびょ"],
-    correctAnswer: 0
+export async function loadQuestionSetData(id: string): Promise<QuestionSet> {
+  try {
+    const modules = import.meta.glob('./questionSets/*.json', { eager: true });
+    const matchingFile = Object.entries(modules).find(([path]) => path.includes(`${id}.json`));
+    
+    if (!matchingFile) {
+      throw new Error(`Question set "${id}" not found`);
+    }
+    
+    return matchingFile[1].default as QuestionSet;
+  } catch (error) {
+    throw new Error(`Failed to load question set: ${error.message}`);
   }
-];
+}
 
 // Fisher–Yates アルゴリズムで配列をシャッフルするヘルパー関数
 export function shuffleArray<T>(array: T[]): T[] {
@@ -289,26 +293,6 @@ export function shuffleArray<T>(array: T[]): T[] {
   }
   return arr;
 }
-
-export const getRandomQuestion = (): Question => {
-  // ランダムに1問を選ぶ
-  const randomIndex = Math.floor(Math.random() * questions.length);
-  const original = questions[randomIndex];
-
-  // options 全体をシャッフル
-  const shuffledOptions = shuffleArray(original.options);
-
-  // シャッフル後の配列内で、もともとの正解（options[0]）がどこに移ったか探す
-  const correctReading = original.options[original.correctAnswer]; // ここでは常に options[0]
-  const newCorrectIndex = shuffledOptions.findIndex(opt => opt === correctReading);
-
-  return {
-    id: original.id,
-    text: original.text,
-    options: shuffledOptions,
-    correctAnswer: newCorrectIndex
-  };
-};
 
 export function getQuestionWithShuffledOptions(question: Question): Question {
   if (!question) return question;

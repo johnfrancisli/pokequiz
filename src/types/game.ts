@@ -20,14 +20,22 @@ export interface GameState {
   currentQuestion: Question | null;
   timeRemaining: number;
   maxQuestionTime: number;
-  gameStatus: 'selecting-level' | 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
+  gameStatus: 'selecting-question-set' | 'selecting-level' | 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
   selectedLevel: number;
+  currentQuestionSetId: string | null;
 }
 
-export type AttackStrength = 'weak' | 'ok' | 'good' | 'effective' | 'critical';
+export type AttackStrength = 'weak' | 'medium' | 'strong' | 'critical';
 
 export interface CharacterIcon {
   id: string;
   name: string;
   description: string;
+}
+
+export interface QuestionSet {
+  id: string;
+  name: string;
+  description: string;
+  questions: Question[];
 }

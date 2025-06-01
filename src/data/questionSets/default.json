@@ -1,0 +1,13 @@
+{
+  "id": "default",
+  "name": "基本の漢字読み方",
+  "description": "基本的な漢字の読み方を学ぶための問題セット",
+  "questions": [
+    {
+      "id": 1,
+      "text": "意味",
+      "options": ["いみ", "いま", "うみ", "えいみ"],
+      "correctAnswer": 0
+    }
+  ]
+}
