@@ -5,6 +5,13 @@ export interface Question {
   correctAnswer: number;
 }
 
+export interface AnswerRecord {
+  question: Question;
+  selectedAnswerIndex: number | null;
+  correctAnswerIndex: number;
+  timeRemaining: number;
+}
+
 export interface Character {
   name: string;
   health: number;
@@ -23,9 +30,10 @@ export interface GameState {
   gameStatus: 'selecting-question-set' | 'selecting-level' | 'selecting-starter' | 'in-progress' | 'player-won' | 'computer-won';
   selectedLevel: number;
   currentQuestionSetId: string | null;
+  questionHistory: AnswerRecord[];
 }
 
-export type AttackStrength = 'weak' | 'medium' | 'strong' | 'critical';
+export type AttackStrength = 'weak' | 'ok' | 'good' | 'effective' | 'critical';
 
 export interface CharacterIcon {
   id: string;

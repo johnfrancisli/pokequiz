@@ -39,7 +39,7 @@ const defaultGameState: GameState = {
     maxHealth: 100,
     isAttacking: false,
     isHit: false,
-    pokemonSlug: ''
+    pokemonSlug: '',
   },
   computerCharacter: {
     name: 'Computer',
@@ -47,14 +47,15 @@ const defaultGameState: GameState = {
     maxHealth: 100,
     isAttacking: false,
     isHit: false,
-    pokemonSlug: ''
+    pokemonSlug: '',
   },
   currentQuestion: null,
   timeRemaining: 10,
   maxQuestionTime: 10,
   gameStatus: 'selecting-question-set',
   selectedLevel: 1,
-  currentQuestionSetId: null
+  currentQuestionSetId: null,
+  questionHistory: []
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -201,7 +202,18 @@ export const GameProvider: React.FC<{
     if (answerSubmitted || gameState.gameStatus !== 'in-progress') return;
     
     setAnswerSubmitted(true);
-    const correct = optionIndex === gameState.currentQuestion?.correctAnswer;
+    const currentQuestion = gameState.currentQuestion;
+    if (!currentQuestion) return;
+
+    // Record the answer
+    const answerRecord: AnswerRecord = {
+      question: currentQuestion,
+      selectedAnswerIndex: optionIndex,
+      correctAnswerIndex: currentQuestion.correctAnswer,
+      timeRemaining: gameState.timeRemaining
+    };
+    
+    const correct = optionIndex === currentQuestion.correctAnswer;
     
     if (correct) {
       const percentage = (gameState.timeRemaining / gameState.maxQuestionTime) * 100;
@@ -214,6 +226,7 @@ export const GameProvider: React.FC<{
       
       setGameState(prev => ({
         ...prev,
+        questionHistory: [...prev.questionHistory, answerRecord],
         playerCharacter: { ...prev.playerCharacter, isAttacking: true },
         computerCharacter: { ...prev.computerCharacter, isHit: true }
       }));
@@ -309,6 +322,14 @@ export const GameProvider: React.FC<{
         if (prev.timeRemaining <= 0) {
           clearInterval(timer);
           setAnswerSubmitted(true);
+          
+          // Record the timeout
+          const answerRecord: AnswerRecord = {
+            question: prev.currentQuestion!,
+            selectedAnswerIndex: null,
+            correctAnswerIndex: prev.currentQuestion!.correctAnswer,
+            timeRemaining: 0
+          };
 
           const damage = 10;
           setComputerAttackStrength('critical');
@@ -317,6 +338,7 @@ export const GameProvider: React.FC<{
           
           setGameState(prevState => ({
             ...prevState,
+            questionHistory: [...prevState.questionHistory, answerRecord],
             computerCharacter: { ...prevState.computerCharacter, isAttacking: true },
             playerCharacter: { ...prevState.playerCharacter, isHit: true }
           }));

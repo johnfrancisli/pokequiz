@@ -8,6 +8,7 @@ import AttackDisplay from './AttackDisplay';
 import LevelSelection from './LevelSelection';
 import StarterSelection from './StarterSelection';
 import QuestionSetSelection from './QuestionSetSelection';
+import BattleResults from './BattleResults';
 
 const pokemonLogoUrl = new URL('../assets/pokemon-logo.png', import.meta.url).href;
 
@@ -50,7 +51,7 @@ const Game: React.FC = () => {
           <div className="text-center">
             <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-green-600">勝利！</h2>
-            <p className="mb-6">あなたの知識で相手を倒しました！</p>
+            <BattleResults gameState={gameState} />
             <div className="space-y-4">
               <button 
                 onClick={() => resetGame(true)}
@@ -73,7 +74,7 @@ const Game: React.FC = () => {
           <div className="text-center">
             <img src={pokemonLogoUrl} alt="Pokemon" className="h-24 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4 text-red-600">敗北！</h2>
-            <p className="mb-6">コンピューターがあなたを倒しました！</p>
+            <BattleResults gameState={gameState} />
             <div className="space-y-4">
               <button 
                 onClick={() => resetGame(true)}
