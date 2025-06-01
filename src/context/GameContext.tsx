@@ -141,7 +141,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       timeRemaining: questionTime,
       maxQuestionTime: questionTime
     });
-  }, []);
+  }, [gameState.selectedLevel]);
 
   // Reset the game
   const resetGame = useCallback(() => {
