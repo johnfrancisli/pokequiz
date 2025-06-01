@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
 import { GameState, Question, AttackStrength, Character } from '../types/game';
-import { questions, shuffleArray, getQuestionWithShuffledOptions } from '../data/questions';
+import { shuffleArray, getQuestionWithShuffledOptions, loadQuestionSetData } from '../data/questions';
 import { getStarterPokemonList, getRandomStarter, StarterPokemon } from '../utils/pokemonUtils';
 
 interface GameContextType {
@@ -8,7 +8,7 @@ interface GameContextType {
   selectLevel: (level: number) => void;
   selectStarter: (starter: StarterPokemon) => void;
   answerQuestion: (optionIndex: number) => void;
-  resetGame: () => void;
+  resetGame: (keepLevelAndQuestionSet?: boolean) => void;
   starterList: StarterPokemon[];
   playerAttackStrength: AttackStrength | null;
   computerAttackStrength: AttackStrength | null;
@@ -61,6 +61,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [gameState, setGameState] = useState<GameState>(defaultGameState);
   const [starterList] = useState<StarterPokemon[]>(getStarterPokemonList());
   const [unaskedQuestions, setUnaskedQuestions] = useState<Question[]>([]);
+  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [answerSubmitted, setAnswerSubmitted] = useState(false);
   const [playerAttackStrength, setPlayerAttackStrength] = useState<AttackStrength | null>(null);
   const [computerAttackStrength, setComputerAttackStrength] = useState<AttackStrength | null>(null);
@@ -68,6 +69,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [computerAttackDamage, setComputerAttackDamage] = useState(0);
   const [showPlayerAttack, setShowPlayerAttack] = useState(false);
   const [showComputerAttack, setShowComputerAttack] = useState(false);
+
+  // Load initial question set
+  useEffect(() => {
+    const loadInitialQuestions = async () => {
+      const questions = await loadQuestionSetData('default');
+      setAllQuestions(questions);
+    };
+    loadInitialQuestions();
+  }, []);
 
   const getAttackStrengthFromPercentage = (percentage: number): AttackStrength => {
     if (percentage >= 80) return 'critical';
@@ -94,7 +104,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     // If we've used all questions, reshuffle the full question set
     if (unaskedQuestions.length === 0) {
-      setUnaskedQuestions(shuffleArray([...questions]));
+      setUnaskedQuestions(shuffleArray([...allQuestions]));
     }
 
     // Take the first question from our unasked questions
@@ -112,7 +122,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       maxQuestionTime: questionTime
     })); 
     setAnswerSubmitted(false);
-  }, [unaskedQuestions, gameState.selectedLevel]);
+  }, [unaskedQuestions, gameState.selectedLevel, allQuestions]);
 
   // Start the game
   const selectStarter = useCallback((selectedStarter: StarterPokemon) => {
@@ -120,7 +130,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const questionTime = QUESTION_TIMERS[gameState.selectedLevel as keyof typeof QUESTION_TIMERS];
     
     // Initialize unasked questions with shuffled questions array
-    const initialQuestions = shuffleArray([...questions]);
+    const initialQuestions = shuffleArray([...allQuestions]);
     setUnaskedQuestions(initialQuestions.slice(1)); // Remove first question since we'll use it as initial question
 
     setGameState({
@@ -141,11 +151,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       timeRemaining: questionTime,
       maxQuestionTime: questionTime
     });
-  }, [gameState.selectedLevel]);
+  }, [gameState.selectedLevel, allQuestions]);
 
   // Reset the game
-  const resetGame = useCallback(() => {
-    setGameState(defaultGameState);
+  const resetGame = useCallback((keepLevelAndQuestionSet: boolean = false) => {
+    setGameState(prev => ({
+      ...defaultGameState,
+      selectedLevel: keepLevelAndQuestionSet ? prev.selectedLevel : 1
+    }));
     setUnaskedQuestions([]);
     setAnswerSubmitted(false);
     setPlayerAttackStrength(null);
