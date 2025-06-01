@@ -73,8 +73,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Load initial question set
   useEffect(() => {
     const loadInitialQuestions = async () => {
-      const questions = await loadQuestionSetData('default');
-      setAllQuestions(questions);
+      const questionSet = await loadQuestionSetData('default');
+      setAllQuestions(questionSet.questions);
     };
     loadInitialQuestions();
   }, []);
