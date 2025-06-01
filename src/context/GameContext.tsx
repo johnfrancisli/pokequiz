@@ -108,7 +108,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setGameState(prev => ({
       ...prev,
       currentQuestion: questionWithShuffledOptions,
-      timeRemaining: QUESTION_TIMERS[prev.selectedLevel as keyof typeof QUESTION_TIMERS],
       timeRemaining: questionTime,
       maxQuestionTime: questionTime
     })); 
